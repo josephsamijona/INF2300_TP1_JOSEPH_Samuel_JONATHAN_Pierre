@@ -41,7 +41,7 @@ Nous sommes toujours ouverts aux questions, suggestions et messages d'encouragem
 ## Informations du Cours
 - **Cours :** INF2300 Infographie
 - **Session :** Été 2024
-- **Travail No. :** 1
+- **Travail No. :** 2
 - **Groupe :**
   - JOSEPH Samuel Jonathan
   - JONATHAN Pierre Louis

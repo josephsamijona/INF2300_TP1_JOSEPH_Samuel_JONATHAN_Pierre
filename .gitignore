@@ -1,0 +1,114 @@
+# Python
+*.py[cod]
+*__pycache__/
+*/*.py[cod]
+*/*__pycache__/
+
+# Environnement virtuel
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Fichiers compilés / optimisés / DLL
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / empaquetage
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+# Habituellement, ces fichiers sont écrits par un script Python à partir d'un modèle
+# avant que PyInstaller ne construise l'exécutable, afin d'injecter des informations de date/autres informations.
+*.manifest
+*.spec
+
+# Logs de l'installateur
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Rapports de tests unitaires / couverture
+htmlcov/
+.tox/
+.nox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Pytest
+.cache/
+
+# Traductions
+*.mo
+*.pot
+
+# Fichiers Django :
+*.log
+local_settings.py
+db.sqlite3
+media
+
+# Fichiers Flask :
+instance/
+.webassets-cache
+
+# Fichiers Scrapy :
+.scrapy
+
+# Documentation Sphinx
+docs/_build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# Fichier de calendrier de beat de celery
+celerybeat-schedule
+
+# Fichiers analysés par SageMath
+*.sage.py
+
+# Environnements
+.env
+.env.local
+.env.*.local
+.envrc
+venv/
+env/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# Divers
+.DS_Store
+Thumbs.db
