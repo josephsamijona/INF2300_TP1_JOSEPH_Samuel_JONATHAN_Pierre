@@ -2,3 +2,4 @@ pygame
 numpy
 PyOpenGL
 PyOpenGL_accelerate
+opencv-python
