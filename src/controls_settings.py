@@ -1,6 +1,5 @@
 import pygame
 import os
-from src.settings import show_settings
 
 class Button:
     def __init__(self, text, font, color, x, y, width, height):
@@ -23,24 +22,17 @@ class Button:
     def check_hover(self, mouse_pos):
         self.hovered = self.rect.collidepoint(mouse_pos)
 
-
-def show_menu(screen):
-    # Obtenir le chemin absolu du fichier image de fond et du fichier son
+def show_controls_settings(screen):
+    # Obtenir le chemin absolu du fichier image de fond
     current_dir = os.path.dirname(os.path.abspath(__file__))
     background_path = os.path.join(current_dir, "../game/assets/backgrounds/menu_background.png")
-    sound_path = os.path.join(current_dir, "../game/assets/music/LEMMiNO - Cipher (BGM).mp3")
 
     # Charger l'image de fond
     background = pygame.image.load(background_path)
 
-    # Initialiser Pygame Mixer pour le son de fond
-    pygame.mixer.init()
-    if not pygame.mixer.music.get_busy():
-        pygame.mixer.music.load(sound_path)
-        pygame.mixer.music.play(-1)  # Jouer en boucle
-
-    # Définir les options du menu
-    menu_items = ["Jouer", "Paramètres", "Crédits", "Quitter"]
+    # Définir les touches de contrôle
+    controls_items = ["Déplacer gauche", "Déplacer droite", "Sauter", "Attaquer", "Retour"]
+    controls = {"Déplacer gauche": "LEFT", "Déplacer droite": "RIGHT", "Sauter": "UP", "Attaquer": "SPACE"}
     selected_item = 0
 
     # Définir la police et la taille
@@ -48,20 +40,22 @@ def show_menu(screen):
     font = pygame.font.Font(font_path, 50)
     title_font = pygame.font.Font(font_path, 80)
 
-    # Créer les boutons du menu
+    # Créer les boutons des contrôles
     buttons = []
-    button_width = 300
+    button_width = 400
     button_height = 60
     button_x = (screen.get_width() - button_width) // 2
-    button_y_start = 300
-    button_y_padding = 100
+    button_y_start = 200
+    button_y_padding = 80
 
-    for i, item in enumerate(menu_items):
+    for i, item in enumerate(controls_items):
         button_y = button_y_start + i * button_y_padding
-        button = Button(item, font, (200, 200, 200), button_x, button_y, button_width, button_height)
+        button_text = f"{item}: {controls[item]}" if item in controls else item
+        button = Button(button_text, font, (200, 200, 200), button_x, button_y, button_width, button_height)
         buttons.append(button)
 
     clock = pygame.time.Clock()
+    waiting_for_key = False
 
     while True:
         mouse_pos = pygame.mouse.get_pos()
@@ -70,44 +64,34 @@ def show_menu(screen):
                 pygame.quit()
                 return
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    if selected_item == 0:
-                        print("Jouer sélectionné")
-                        # show_game_modes(screen)  # À implémenter
-                    elif selected_item == 1:
-                        print("Paramètres sélectionné")
-                        show_settings(screen)
-                    elif selected_item == 2:
-                        print("Crédits sélectionné")
-                        # show_credits(screen)  # À implémenter
-                    elif selected_item == 3:
-                        pygame.quit()
+                if waiting_for_key:
+                    key_name = pygame.key.name(event.key).upper()
+                    controls[controls_items[selected_item]] = key_name
+                    buttons[selected_item].text = f"{controls_items[selected_item]}: {key_name}"
+                    waiting_for_key = False
+                elif event.key == pygame.K_RETURN:
+                    if selected_item == len(controls_items) - 1:  # "Retour" is the last item
                         return
+                    else:
+                        waiting_for_key = True
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for i, button in enumerate(buttons):
                     if button.hovered:
-                        if i == 0:
-                            print("Jouer sélectionné")
-                            # show_game_modes(screen)  # À implémenter
-                        elif i == 1:
-                            print("Paramètres sélectionné")
-                            show_settings(screen)
-                        elif i == 2:
-                            print("Crédits sélectionné")
-                            # show_credits(screen)  # À implémenter
-                        elif i == 3:
-                            pygame.quit()
+                        if controls_items[i] == "Retour":
                             return
+                        else:
+                            waiting_for_key = True
+                            selected_item = i
 
         # Afficher l'image de fond
         screen.blit(background, (0, 0))
 
-        # Afficher le titre du jeu
-        title_text = title_font.render("Blades of Honor: Clash of Cultures", True, (255, 255, 255))
+        # Afficher le titre des paramètres de contrôle
+        title_text = title_font.render("Touches de contrôle", True, (255, 255, 255))
         title_rect = title_text.get_rect(center=(screen.get_width() / 2, 100))
         screen.blit(title_text, title_rect)
 
-        # Afficher les boutons du menu
+        # Afficher les boutons des contrôles
         for button in buttons:
             button.check_hover(mouse_pos)
             button.draw(screen)
@@ -118,6 +102,5 @@ def show_menu(screen):
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((1200, 800))
-    show_menu(screen)
+    show_controls_settings(screen)
     pygame.quit()
-
