@@ -1,6 +1,8 @@
 import pygame
 import os
 from src.settings import show_settings
+from src.credits import show_credits
+from src.game_modes import show_game_modes
 
 class Button:
     def __init__(self, text, font, color, x, y, width, height):
@@ -48,19 +50,6 @@ def show_menu(screen):
     font = pygame.font.Font(font_path, 50)
     title_font = pygame.font.Font(font_path, 80)
 
-    # Créer les boutons du menu
-    buttons = []
-    button_width = 300
-    button_height = 60
-    button_x = (screen.get_width() - button_width) // 2
-    button_y_start = 300
-    button_y_padding = 100
-
-    for i, item in enumerate(menu_items):
-        button_y = button_y_start + i * button_y_padding
-        button = Button(item, font, (200, 200, 200), button_x, button_y, button_width, button_height)
-        buttons.append(button)
-
     clock = pygame.time.Clock()
 
     while True:
@@ -72,14 +61,11 @@ def show_menu(screen):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     if selected_item == 0:
-                        print("Jouer sélectionné")
-                        # show_game_modes(screen)  # À implémenter
+                        show_game_modes(screen, show_menu)
                     elif selected_item == 1:
-                        print("Paramètres sélectionné")
                         show_settings(screen)
                     elif selected_item == 2:
-                        print("Crédits sélectionné")
-                        # show_credits(screen)  # À implémenter
+                        show_credits(screen)
                     elif selected_item == 3:
                         pygame.quit()
                         return
@@ -87,19 +73,17 @@ def show_menu(screen):
                 for i, button in enumerate(buttons):
                     if button.hovered:
                         if i == 0:
-                            print("Jouer sélectionné")
-                            # show_game_modes(screen)  # À implémenter
+                            show_game_modes(screen, show_menu)
                         elif i == 1:
-                            print("Paramètres sélectionné")
                             show_settings(screen)
                         elif i == 2:
-                            print("Crédits sélectionné")
-                            # show_credits(screen)  # À implémenter
+                            show_credits(screen)
                         elif i == 3:
                             pygame.quit()
                             return
 
-        # Afficher l'image de fond
+        # Redimensionner l'image de fond
+        background = pygame.transform.scale(background, (screen.get_width(), screen.get_height()))
         screen.blit(background, (0, 0))
 
         # Afficher le titre du jeu
@@ -107,17 +91,25 @@ def show_menu(screen):
         title_rect = title_text.get_rect(center=(screen.get_width() / 2, 100))
         screen.blit(title_text, title_rect)
 
-        # Afficher les boutons du menu
-        for button in buttons:
+        # Créer et afficher les boutons du menu
+        buttons = []
+        button_width = screen.get_width() // 3
+        button_height = screen.get_height() // 12
+        button_x = (screen.get_width() - button_width) // 2
+        button_y_start = screen.get_height() // 3
+        button_y_padding = screen.get_height() // 10  # Augmenter l'espace entre les boutons
+
+        for i, item in enumerate(menu_items):
+            button_y = button_y_start + i * button_y_padding
+            button = Button(item, font, (200, 200, 200), button_x, button_y, button_width, button_height)
             button.check_hover(mouse_pos)
             button.draw(screen)
+            buttons.append(button)
 
         pygame.display.flip()
         clock.tick(30)
 
 if __name__ == "__main__":
     pygame.init()
-    screen = pygame.display.set_mode((1200, 800))
-    show_menu(screen)
-    pygame.quit()
-
+    screen = pygame.display.set_mode((1200, 800), pygame.RESIZABLE)
+    show_menu

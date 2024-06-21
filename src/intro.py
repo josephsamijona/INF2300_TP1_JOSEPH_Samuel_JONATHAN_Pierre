@@ -23,6 +23,9 @@ def show_intro(screen):
         if not ret:
             break
 
+        # Redimensionner le cadre pour qu'il corresponde à la taille de l'écran
+        frame = cv2.resize(frame, (screen.get_width(), screen.get_height()))
+
         # Convertir l'image de OpenCV (BGR) à Pygame (RGB)
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame_surface = pygame.surfarray.make_surface(frame)
@@ -45,3 +48,8 @@ def show_intro(screen):
     cap.release()
     pygame.mixer.music.stop()
 
+if __name__ == "__main__":
+    pygame.init()
+    screen = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
+    show_intro(screen)
+    pygame.quit()
