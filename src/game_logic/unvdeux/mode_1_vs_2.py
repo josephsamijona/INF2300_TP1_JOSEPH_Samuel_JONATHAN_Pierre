@@ -1,0 +1,144 @@
+import pygame
+from pygame import mixer
+import os
+from logic1v2 import Fighter
+
+class GameMode1v2:
+    def __init__(self, screen):
+        self.screen = screen
+        self.SCREEN_WIDTH = screen.get_width()
+        self.SCREEN_HEIGHT = screen.get_height()
+        self.clock = pygame.time.Clock()
+        self.FPS = 60
+        self.intro_count = 3
+        self.last_count_update = pygame.time.get_ticks()
+        self.score = [0, 0]  # scores des joueurs [P1, P2]
+        self.round_over = False
+        self.ROUND_OVER_COOLDOWN = 2000
+
+        # Définir les couleurs
+        self.RED = (255, 0, 0)
+        self.YELLOW = (255, 255, 0)
+        self.WHITE = (255, 255, 255)
+
+        # Définir les variables des combattants
+        self.WARRIOR_SIZE = 162
+        self.WARRIOR_SCALE = 4
+        self.WARRIOR_OFFSET = [72, 56]
+        self.WARRIOR_DATA = [self.WARRIOR_SIZE, self.WARRIOR_SCALE, self.WARRIOR_OFFSET]
+        self.WIZARD_SIZE = 250
+        self.WIZARD_SCALE = 3
+        self.WIZARD_OFFSET = [112, 107]
+        self.WIZARD_DATA = [self.WIZARD_SIZE, self.WIZARD_SCALE, self.WIZARD_OFFSET]
+
+        # Obtenir le chemin absolu du répertoire actuel
+        self.current_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # Charger la musique et les sons
+        pygame.mixer.music.load(os.path.join(self.current_dir, "../../../assets/music/LEMMiNO - Cipher (BGM).mp3"))
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(-1, 0.0, 5000)
+        self.sword_fx = pygame.mixer.Sound(os.path.join(self.current_dir, "../../../assets/audio/sword.wav"))
+        self.sword_fx.set_volume(0.5)
+        self.magic_fx = pygame.mixer.Sound(os.path.join(self.current_dir, "../../../assets/audio/magic.wav"))
+        self.magic_fx.set_volume(0.75)
+
+        # Charger l'image de fond
+        self.bg_image = pygame.image.load(os.path.join(self.current_dir, "../../../assets/background/moon.png")).convert_alpha()
+
+        # Charger les feuilles de sprites
+        self.warrior_sheet = pygame.image.load(os.path.join(self.current_dir, "../../../assets/characters/warrior/Sprites/warrior.png")).convert_alpha()
+        self.wizard_sheet = pygame.image.load(os.path.join(self.current_dir, "../../../assets/characters/wizard/Sprites/wizard.png")).convert_alpha()
+
+        # Charger l'image de victoire
+        self.victory_img = pygame.image.load(os.path.join(self.current_dir, "../../../assets/icons/victory.png")).convert_alpha()
+
+        # Définir le nombre d'étapes dans chaque animation
+        self.WARRIOR_ANIMATION_STEPS = [10, 8, 1, 7, 7, 3, 7]
+        self.WIZARD_ANIMATION_STEPS = [8, 8, 1, 8, 8, 3, 7]
+
+        # Définir la police
+        self.count_font = pygame.font.Font(os.path.join(self.current_dir, "../../../assets/fonts/Seagram tfb.ttf"), 80)
+        self.score_font = pygame.font.Font(os.path.join(self.current_dir, "../../../assets/fonts/Seagram tfb.ttf"), 30)
+
+        # Créer deux instances de combattants
+        self.fighter_1 = Fighter(1, 200, 310, False, self.WARRIOR_DATA, self.warrior_sheet, self.WARRIOR_ANIMATION_STEPS, self.sword_fx)
+        self.fighter_2 = Fighter(2, 700, 310, True, self.WIZARD_DATA, self.wizard_sheet, self.WIZARD_ANIMATION_STEPS, self.magic_fx)
+
+    def draw_text(self, text, font, text_col, x, y):
+        img = font.render(text, True, text_col)
+        self.screen.blit(img, (x, y))
+
+    def draw_bg(self):
+        scaled_bg = pygame.transform.scale(self.bg_image, (self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
+        self.screen.blit(scaled_bg, (0, 0))
+
+    def draw_health_bar(self, health, x, y):
+        ratio = health / 100
+        pygame.draw.rect(self.screen, self.WHITE, (x - 2, y - 2, 404, 34))
+        pygame.draw.rect(self.screen, self.RED, (x, y, 400, 30))
+        pygame.draw.rect(self.screen, self.YELLOW, (x, y, 400 * ratio, 30))
+
+    def run(self):
+        run = True
+        while run:
+            self.clock.tick(self.FPS)
+
+            # Dessiner le fond
+            self.draw_bg()
+
+            # Afficher les statistiques des joueurs
+            self.draw_health_bar(self.fighter_1.health, 20, 20)
+            self.draw_health_bar(self.fighter_2.health, 580, 20)
+            self.draw_text("P1: " + str(self.score[0]), self.score_font, self.RED, 20, 60)
+            self.draw_text("P2: " + str(self.score[1]), self.score_font, self.RED, 580, 60)
+
+            # Mettre à jour le compte à rebours
+            if self.intro_count <= 0:
+                # Déplacer les combattants
+                self.fighter_1.move(self.SCREEN_WIDTH, self.SCREEN_HEIGHT, self.screen, self.fighter_2, self.round_over)
+                self.fighter_2.move(self.SCREEN_WIDTH, self.SCREEN_HEIGHT, self.screen, self.fighter_1, self.round_over)
+            else:
+                # Afficher le compte à rebours
+                self.draw_text(str(self.intro_count), self.count_font, self.RED, self.SCREEN_WIDTH / 2, self.SCREEN_HEIGHT / 3)
+                # Mettre à jour le compte à rebours
+                if (pygame.time.get_ticks() - self.last_count_update) >= 1000:
+                    self.intro_count -= 1
+                    self.last_count_update = pygame.time.get_ticks()
+
+            # Mettre à jour les combattants
+            self.fighter_1.update()
+            self.fighter_2.update()
+
+            # Dessiner les combattants
+            self.fighter_1.draw(self.screen)
+            self.fighter_2.draw(self.screen)
+
+            # Vérifier la défaite des joueurs
+            if self.round_over == False:
+                if self.fighter_1.alive == False:
+                    self.score[1] += 1
+                    self.round_over = True
+                    self.round_over_time = pygame.time.get_ticks()
+                elif self.fighter_2.alive == False:
+                    self.score[0] += 1
+                    self.round_over = True
+                    self.round_over_time = pygame.time.get_ticks()
+            else:
+                # Afficher l'image de victoire
+                self.screen.blit(self.victory_img, (360, 150))
+                if pygame.time.get_ticks() - self.round_over_time > self.ROUND_OVER_COOLDOWN:
+                    self.round_over = False
+                    self.intro_count = 3
+                    self.fighter_1 = Fighter(1, 200, 310, False, self.WARRIOR_DATA, self.warrior_sheet, self.WARRIOR_ANIMATION_STEPS, self.sword_fx)
+                    self.fighter_2 = Fighter(2, 700, 310, True, self.WIZARD_DATA, self.wizard_sheet, self.WIZARD_ANIMATION_STEPS, self.magic_fx)
+
+            # Gérer les événements
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+
+            # Mettre à jour l'affichage
+            pygame.display.update()
+
+        pygame.quit()

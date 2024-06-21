@@ -1,5 +1,9 @@
 import pygame
 import os
+from src.game_logic.unvdeux.mode_1_vs_2 import GameMode1v2
+# from src.game_modes.mode_1_vs_computer import show_1_vs_computer
+# from src.game_modes.mode_3d_adventure import show_3d_adventure
+# from src.game_modes.mode_ai_vs_ai import show_ai_vs_ai
 
 class Button:
     def __init__(self, text, font, color, x, y, width, height):
@@ -50,34 +54,32 @@ def show_game_modes(screen, show_menu):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     if selected_item == 0:
-                        print("1 vs Computer sélectionné")
-                        # show_1_vs_computer(screen)  # À implémenter
+                        # show_1_vs_computer(screen)
+                        pass
                     elif selected_item == 1:
-                        print("3D Adventure sélectionné")
-                        # show_3d_adventure(screen)  # À implémenter
+                        # show_3d_adventure(screen)
+                        pass
                     elif selected_item == 2:
-                        print("1 vs 2 sélectionné")
-                        # show_1_vs_2(screen)  # À implémenter
+                        GameMode1v2(screen)
                     elif selected_item == 3:
-                        print("AI vs AI sélectionné")
-                        # show_ai_vs_ai(screen)  # À implémenter
+                        # show_ai_vs_ai(screen)
+                        pass
                     elif selected_item == 4:
                         return show_menu(screen)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for i, button in enumerate(buttons):
                     if button.hovered:
                         if i == 0:
-                            print("1 vs Computer sélectionné")
-                            # show_1_vs_computer(screen)  # À implémenter
+                            # show_1_vs_computer(screen)
+                            pass
                         elif i == 1:
-                            print("3D Adventure sélectionné")
-                            # show_3d_adventure(screen)  # À implémenter
+                            # show_3d_adventure(screen)
+                            pass
                         elif i == 2:
-                            print("1 vs 2 sélectionné")
-                            # show_1_vs_2(screen)  # À implémenter
+                            GameMode1v2(screen)
                         elif i == 3:
-                            print("AI vs AI sélectionné")
-                            # show_ai_vs_ai(screen)  # À implémenter
+                            # show_ai_vs_ai(screen)
+                            pass
                         elif i == 4:
                             return show_menu(screen)
 
@@ -113,4 +115,3 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((1200, 800), pygame.RESIZABLE)
     show_game_modes(screen, lambda scr: None)  # Fonction placeholder pour éviter les erreurs lors de l'exécution directe
     pygame.quit()
-
