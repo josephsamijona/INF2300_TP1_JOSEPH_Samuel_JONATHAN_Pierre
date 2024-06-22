@@ -1,25 +1,35 @@
 import pygame
 from pygame import mixer
 import os
-from logic1v2 import Fighter
+from src.game_logic.unvdeux.logic1v2 import Fighter
 
-class GameMode1v2:
-    def __init__(self, screen):
-        self.screen = screen
-        self.SCREEN_WIDTH = screen.get_width()
-        self.SCREEN_HEIGHT = screen.get_height()
+class Game1vs2:
+    def __init__(self, root_dir):
+        # Initialiser le mixeur et Pygame
+        mixer.init()
+        pygame.init()
+
+        # Créer la fenêtre du jeu
+        self.SCREEN_WIDTH = 1000
+        self.SCREEN_HEIGHT = 600
+        self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
+        pygame.display.set_caption("Blades of Honor: Clash of Cultures")
+
+        # Définir la fréquence d'images
         self.clock = pygame.time.Clock()
         self.FPS = 60
-        self.intro_count = 3
-        self.last_count_update = pygame.time.get_ticks()
-        self.score = [0, 0]  # scores des joueurs [P1, P2]
-        self.round_over = False
-        self.ROUND_OVER_COOLDOWN = 2000
 
         # Définir les couleurs
         self.RED = (255, 0, 0)
         self.YELLOW = (255, 255, 0)
         self.WHITE = (255, 255, 255)
+
+        # Définir les variables de jeu
+        self.intro_count = 3
+        self.last_count_update = pygame.time.get_ticks()
+        self.score = [0, 0]  # scores des joueurs [P1, P2]
+        self.round_over = False
+        self.ROUND_OVER_COOLDOWN = 2000
 
         # Définir les variables des combattants
         self.WARRIOR_SIZE = 162
@@ -31,54 +41,61 @@ class GameMode1v2:
         self.WIZARD_OFFSET = [112, 107]
         self.WIZARD_DATA = [self.WIZARD_SIZE, self.WIZARD_SCALE, self.WIZARD_OFFSET]
 
-        # Obtenir le chemin absolu du répertoire actuel
-        self.current_dir = os.path.dirname(os.path.abspath(__file__))
+        # Obtenir le répertoire racine du projet
+        self.root_dir = root_dir
 
         # Charger la musique et les sons
-        pygame.mixer.music.load(os.path.join(self.current_dir, "../../../assets/music/LEMMiNO - Cipher (BGM).mp3"))
+        pygame.mixer.music.load(os.path.join(self.root_dir, "..", "game", "assets", "music", "LEMMiNO - Cipher (BGM).mp3"))
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1, 0.0, 5000)
-        self.sword_fx = pygame.mixer.Sound(os.path.join(self.current_dir, "../../../assets/audio/sword.wav"))
+        self.sword_fx = pygame.mixer.Sound(os.path.join(self.root_dir, "..", "game", "assets", "audio", "sword.wav"))
         self.sword_fx.set_volume(0.5)
-        self.magic_fx = pygame.mixer.Sound(os.path.join(self.current_dir, "../../../assets/audio/magic.wav"))
+        self.magic_fx = pygame.mixer.Sound(os.path.join(self.root_dir, "..", "game", "assets", "audio", "magic.wav"))
         self.magic_fx.set_volume(0.75)
 
         # Charger l'image de fond
-        self.bg_image = pygame.image.load(os.path.join(self.current_dir, "../../../assets/background/moon.png")).convert_alpha()
+        self.bg_image = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "backgrounds", "moon.png")).convert_alpha()
 
         # Charger les feuilles de sprites
-        self.warrior_sheet = pygame.image.load(os.path.join(self.current_dir, "../../../assets/characters/warrior/Sprites/warrior.png")).convert_alpha()
-        self.wizard_sheet = pygame.image.load(os.path.join(self.current_dir, "../../../assets/characters/wizard/Sprites/wizard.png")).convert_alpha()
+        self.warrior_sheet = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "characters", "warrior", "Sprites", "warrior.png")).convert_alpha()
+        self.wizard_sheet = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "characters", "wizard", "Sprites", "wizard.png")).convert_alpha()
 
         # Charger l'image de victoire
-        self.victory_img = pygame.image.load(os.path.join(self.current_dir, "../../../assets/icons/victory.png")).convert_alpha()
+       # Charger et redimensionner l'image de victoire
+        self.victory_img = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "icons", "victory.png")).convert_alpha()
+        self.victory_img = pygame.transform.scale(self.victory_img, (128, 128))
+
 
         # Définir le nombre d'étapes dans chaque animation
         self.WARRIOR_ANIMATION_STEPS = [10, 8, 1, 7, 7, 3, 7]
         self.WIZARD_ANIMATION_STEPS = [8, 8, 1, 8, 8, 3, 7]
 
         # Définir la police
-        self.count_font = pygame.font.Font(os.path.join(self.current_dir, "../../../assets/fonts/Seagram tfb.ttf"), 80)
-        self.score_font = pygame.font.Font(os.path.join(self.current_dir, "../../../assets/fonts/Seagram tfb.ttf"), 30)
+        self.count_font = pygame.font.Font(os.path.join(self.root_dir, "..", "game", "assets", "fonts", "Seagram tfb.ttf"), 80)
+        self.score_font = pygame.font.Font(os.path.join(self.root_dir, "..", "game", "assets", "fonts", "Seagram tfb.ttf"), 30)
 
         # Créer deux instances de combattants
         self.fighter_1 = Fighter(1, 200, 310, False, self.WARRIOR_DATA, self.warrior_sheet, self.WARRIOR_ANIMATION_STEPS, self.sword_fx)
         self.fighter_2 = Fighter(2, 700, 310, True, self.WIZARD_DATA, self.wizard_sheet, self.WIZARD_ANIMATION_STEPS, self.magic_fx)
 
+    # Fonction pour dessiner le texte
     def draw_text(self, text, font, text_col, x, y):
         img = font.render(text, True, text_col)
         self.screen.blit(img, (x, y))
 
+    # Fonction pour dessiner le fond
     def draw_bg(self):
         scaled_bg = pygame.transform.scale(self.bg_image, (self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         self.screen.blit(scaled_bg, (0, 0))
 
+    # Fonction pour dessiner les barres de santé des combattants
     def draw_health_bar(self, health, x, y):
         ratio = health / 100
         pygame.draw.rect(self.screen, self.WHITE, (x - 2, y - 2, 404, 34))
         pygame.draw.rect(self.screen, self.RED, (x, y, 400, 30))
         pygame.draw.rect(self.screen, self.YELLOW, (x, y, 400 * ratio, 30))
 
+    # Fonction principale pour lancer le jeu
     def run(self):
         run = True
         while run:
@@ -126,7 +143,10 @@ class GameMode1v2:
                     self.round_over_time = pygame.time.get_ticks()
             else:
                 # Afficher l'image de victoire
-                self.screen.blit(self.victory_img, (360, 150))
+                # Afficher l'image de victoire au centre de l'écran
+                victory_rect = self.victory_img.get_rect(center=(self.SCREEN_WIDTH // 2, self.SCREEN_HEIGHT // 2))
+                self.screen.blit(self.victory_img, victory_rect.topleft)
+
                 if pygame.time.get_ticks() - self.round_over_time > self.ROUND_OVER_COOLDOWN:
                     self.round_over = False
                     self.intro_count = 3
@@ -141,4 +161,5 @@ class GameMode1v2:
             # Mettre à jour l'affichage
             pygame.display.update()
 
+        # Quitter Pygame
         pygame.quit()

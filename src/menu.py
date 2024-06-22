@@ -61,7 +61,7 @@ def show_menu(screen):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     if selected_item == 0:
-                        show_game_modes(screen, show_menu)
+                        show_game_modes(screen, current_dir)
                     elif selected_item == 1:
                         show_settings(screen)
                     elif selected_item == 2:
@@ -73,7 +73,7 @@ def show_menu(screen):
                 for i, button in enumerate(buttons):
                     if button.hovered:
                         if i == 0:
-                            show_game_modes(screen, show_menu)
+                            show_game_modes(screen, current_dir)
                         elif i == 1:
                             show_settings(screen)
                         elif i == 2:
@@ -112,4 +112,5 @@ def show_menu(screen):
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((1200, 800), pygame.RESIZABLE)
-    show_menu
+    show_menu(screen)
+    pygame.quit()
