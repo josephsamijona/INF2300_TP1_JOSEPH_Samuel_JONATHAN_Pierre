@@ -1,9 +1,10 @@
 import pygame
 from pygame import mixer
 import os
-from src.game_logic.unvdeux.logic1v2 import Fighter
+from src.game_logic.vcomputer.logic1vcom import Fighter
 
-class Game1vs2:
+ 
+class Game1vsc:
     def __init__(self, root_dir):
         # Initialiser le mixeur et Pygame
         mixer.init()
@@ -60,11 +61,11 @@ class Game1vs2:
         self.warrior_sheet = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "characters", "warrior", "Sprites", "warrior.png")).convert_alpha()
         self.wizard_sheet = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "characters", "wizard", "Sprites", "wizard.png")).convert_alpha()
 
-        # Charger l'image de victoire
-       # Charger et redimensionner l'image de victoire
-        self.victory_img = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "icons", "victory.png")).convert_alpha()
+        # Charger et redimensionner les images de victoire et de défaite
+        self.victory_img = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "icons", "defeat.png")).convert_alpha()
         self.victory_img = pygame.transform.scale(self.victory_img, (800, 800))
-
+        self.defeat_img = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "icons", "victory.png")).convert_alpha()
+        self.defeat_img = pygame.transform.scale(self.defeat_img, (800, 800))
 
         # Définir le nombre d'étapes dans chaque animation
         self.WARRIOR_ANIMATION_STEPS = [10, 8, 1, 7, 7, 3, 7]
@@ -142,10 +143,14 @@ class Game1vs2:
                     self.round_over = True
                     self.round_over_time = pygame.time.get_ticks()
             else:
-                # Afficher l'image de victoire
-                # Afficher l'image de victoire au centre de l'écran
-                victory_rect = self.victory_img.get_rect(center=(self.SCREEN_WIDTH // 2, self.SCREEN_HEIGHT // 2))
-                self.screen.blit(self.victory_img, victory_rect.topleft)
+                # Afficher l'image de victoire ou de défaite au centre de l'écran
+                if self.fighter_1.alive == False:
+                    img_to_display = self.victory_img
+                else:
+                    img_to_display = self.defeat_img
+
+                victory_rect = img_to_display.get_rect(center=(self.SCREEN_WIDTH // 2, self.SCREEN_HEIGHT // 2))
+                self.screen.blit(img_to_display, victory_rect.topleft)
 
                 if pygame.time.get_ticks() - self.round_over_time > self.ROUND_OVER_COOLDOWN:
                     self.round_over = False

@@ -1,6 +1,7 @@
 import pygame
 import os
 from src.game_logic.unvdeux.mode_1_vs_2 import Game1vs2
+from src.game_logic.vcomputer.mode_1_vs_computer import  Game1vsc
 
 class Button:
     def __init__(self, text, font, color, x, y, width, height):
@@ -70,7 +71,8 @@ def show_game_modes(screen, root_dir):
                     if button.hovered:
                         if i == 0:
                             print("1 vs Computer sélectionné")
-                            # Lancer le mode 1 vs Computer
+                            game = Game1vsc(root_dir)
+                            game.run()
                         elif i == 1:
                             print("1 vs 2 sélectionné")
                             game = Game1vs2(root_dir)
