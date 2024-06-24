@@ -1,7 +1,8 @@
 import pygame
 import os
 from src.game_logic.unvdeux.mode_1_vs_2 import Game1vs2
-from src.game_logic.vcomputer.mode_1_vs_computer import  Game1vsc
+from src.game_logic.vcomputer.mode_1_vs_computer import  Game1vsc 
+from src.game_logic.aivai.mode_ai_vs_ai import Gameaivai
 
 class Button:
     def __init__(self, text, font, color, x, y, width, height):
@@ -79,7 +80,9 @@ def show_game_modes(screen, root_dir):
                             game.run()
                         elif i == 2:
                             print("AI vs AI sélectionné")
-                            # Lancer le mode AI vs AI
+                            # Lancer le mode AI vs AIGameaivai
+                            game = Gameaivai(root_dir)
+                            game.run()
                         elif i == 3:
                             print("3D Adventure sélectionné")
                             # Lancer le mode 3D Adventure
