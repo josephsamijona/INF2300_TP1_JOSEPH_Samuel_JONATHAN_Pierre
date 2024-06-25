@@ -26,8 +26,8 @@ Tous les assets utilisés dans ce projet proviennent de [itch.io](https://itch.i
 
 ![Assets](https://img.shields.io/badge/ASSETS-itch.io-orange)
 
-## Licence
-Ce projet est sous licence MIT. Cela signifie que vous êtes libre de l'utiliser, de le modifier et de le partager. Nous vous encourageons à le faire pour promouvoir le partage de la connaissance libre. Après tout, le savoir est fait pour être partagé, pas pour rester caché dans un tiroir poussiéreux ! 📚✨
+ 
+
 
 ![License](https://img.shields.io/badge/LICENSE-MIT-green)
 
