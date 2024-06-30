@@ -3,3 +3,4 @@ numpy
 PyOpenGL
 PyOpenGL_accelerate
 opencv-python
+numba
