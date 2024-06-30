@@ -1,7 +1,7 @@
 import pygame
 import os
 from src.game_logic.unvdeux.mode_1_vs_2 import Game1vs2
-from src.game_logic.vcomputer.mode_1_vs_computer import Game1vsc 
+from src.game_logic.vcomputer.mode_1_vs_computer import Game1vsc
 from src.game_logic.aivai.mode_ai_vs_ai import Gameaivai
 from src.game_logic.trid.mode_3d_adventure import Game
 
@@ -65,6 +65,7 @@ def show_game_modes(screen, root_dir):
                         # Lancer le mode AI vs AI
                     elif selected_item == 3:
                         print("3D Adventure sélectionné")
+                        pygame.mixer.music.stop()  # Arrêter la musique avant de lancer le jeu
                         game = Game(root_dir)
                         game.run()
                     elif selected_item == 4:
@@ -86,6 +87,7 @@ def show_game_modes(screen, root_dir):
                             game.run()
                         elif i == 3:
                             print("3D Adventure sélectionné")
+                            pygame.mixer.music.stop()  # Arrêter la musique avant de lancer le jeu
                             game = Game(root_dir)
                             game.run()
                         elif i == 4:
@@ -121,5 +123,11 @@ def show_game_modes(screen, root_dir):
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((1200, 800), pygame.RESIZABLE)
+    # Initialiser Pygame Mixer pour le son de fond
+    pygame.mixer.init()
+    sound_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../game/assets/music/LEMMiNO - Cipher (BGM).mp3")
+    pygame.mixer.music.load(sound_path)
+    pygame.mixer.music.play(-1)  # Jouer en boucle
+
     show_game_modes(screen, os.path.dirname(os.path.abspath(__file__)))
     pygame.quit()
