@@ -113,6 +113,6 @@ un immense merci à nos professeurs, collègues, amis, et bien sûr, à vous, po
 
 **merci d'avoir lu notre readme !** nous espérons que vous apprécierez jouer à notre jeu autant que nous avons aimé le créer. **que le code soit avec vous !** 🚀
 
-![thank you](https://example.com/thank-you-image.png)
+![thank you](https://github.com/josephsamijona/INF2300_TP1_JOSEPH_Samuel_JONATHAN_Pierre/raw/main/game/assets/video/Sunrise_animation.mp4)
 
 
