@@ -1,8 +1,8 @@
 import pygame
 import random
 
-
-
+# Cette classe implémente un combattant pour le jeu. Elle gère l'animation, les mouvements, les attaques et les collisions du combattant.
+# Elle prend en charge deux joueurs: un joueur humain et un adversaire contrôlé par l'ordinateur.
 class Fighter:
     def __init__(self, player, x, y, flip, data, sprite_sheet, animation_steps, sound):
         self.player = player
@@ -25,6 +25,7 @@ class Fighter:
         self.alive = True
         self.sound = sound
 
+    # Charger les images de la feuille de sprite pour chaque animation
     def load_images(self, sprite_sheet, animation_steps):
         animation_list = []
         for y, animation in enumerate(animation_steps):
@@ -35,6 +36,7 @@ class Fighter:
             animation_list.append(temp_img_list)
         return animation_list
 
+    # Gérer les mouvements et les actions du combattant
     def move(self, screen_width, screen_height, surface, target, round_over):
         SPEED = 10
         GRAVITY = 2
@@ -102,6 +104,7 @@ class Fighter:
         # Mettre à jour l'image du combattant
         self.update()
 
+    # Mettre à jour l'état et l'animation du combattant
     def update(self):
         # Vérifier l'action en cours
         if self.health <= 0:
@@ -136,6 +139,7 @@ class Fighter:
                     self.attacking = False
                     self.attack_cooldown = 20
 
+    # Gérer les attaques du combattant
     def attack(self, surface, target):
         if self.attacking == False:
             self.attacking = True
@@ -146,12 +150,14 @@ class Fighter:
                 target.update_action(4)
         self.update()
 
+    # Mettre à jour l'action en cours
     def update_action(self, new_action):
         if new_action != self.action:
             self.action = new_action
             self.frame_index = 0
             self.update_time = pygame.time.get_ticks()
 
+    # Dessiner le combattant à l'écran
     def draw(self, surface):
         img = pygame.transform.flip(self.image, self.flip, False)
         surface.blit(img, (self.rect.x - (self.offset[0] * self.image_scale), self.rect.y - (self.offset[1] * self.image_scale)))

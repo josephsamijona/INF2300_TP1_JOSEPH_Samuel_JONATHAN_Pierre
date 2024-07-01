@@ -1,7 +1,55 @@
+# Ce code implémente un mode de jeu en 3D où le joueur explore un labyrinthe et combat des ennemis. 
+# Inspiré par le jeu classique Doom, ce projet recrée une expérience de jeu en 2.5D. 
+# Bien que les éléments graphiques soient en 3D, le rendu utilise des techniques de raycasting 
+# et de projection pour simuler un environnement tridimensionnel sur une grille bidimensionnelle.
+# 
+# Les concepts suivants du libellé du devoir sont appliqués :
+# 
+# 1. Programmation graphique - OpenGL en Python :
+#    - Utilisation de Pygame pour la gestion des graphismes et des événements. 
+#      Pygame, bien qu'étant une bibliothèque graphique 2D, permet de créer des jeux avec des éléments 3D 
+#      en manipulant directement les pixels et en utilisant des transformations géométriques pour simuler une perspective 3D.
+#    - Les textures pour les murs, le sol et le ciel sont chargées et affichées en utilisant des surfaces Pygame 
+#      et des tableaux numpy pour le traitement d'image.
+# 
+# 2. Pipeline de transformation et pipeline graphique programmable :
+#    - La génération de la carte (labyrinthe) et le placement des ennemis utilisent des transformations géométriques 
+#      pour positionner correctement les éléments dans l'espace de jeu.
+#    - Le pipeline graphique programmable est simulé en utilisant des tableaux numpy pour effectuer des calculs rapides 
+#      sur les positions et les états des objets de jeu (comme les ennemis et les murs). 
+#      Les fonctions numba optimisées (avec l'annotation @njit) sont utilisées pour accélérer les calculs et les transformations 
+#      nécessaires pour le rendu de la scène.
+#    - Les coordonnées des ennemis et du joueur sont transformées pour correspondre aux positions sur l'écran, 
+#      en tenant compte des perspectives et des rotations.
+# 
+# 3. Opérations sur les fragments, illumination et textures :
+#    - Les textures pour le sol, le mur et le ciel sont chargées et appliquées aux surfaces correspondantes.
+#    - Les opérations sur les fragments incluent le calcul de l'éclairage en fonction de la distance et de l'angle par rapport à la caméra, 
+#      créant ainsi des effets de luminosité pour simuler une illumination réaliste.
+#    - Des ajustements de luminosité sont faits pour chaque fragment (pixel) afin de simuler l'ombre et la lumière, 
+#      en tenant compte des obstacles et de la distance à la source de lumière.
+#    - Le jeu applique des textures variées aux murs et au sol pour améliorer le réalisme et l'immersion visuelle, 
+#      rappelant les environnements détaillés de Doom.
+# 
+# 4. Éléments de gameplay :
+#    - Le joueur se déplace à travers un labyrinthe généré procéduralement, évitant les obstacles et combattant des ennemis.
+#    - La santé du joueur et des ennemis est gérée, avec des effets sonores associés à chaque action (attaque, blessure, mort).
+#    - Le jeu utilise une logique AI pour les ennemis, leur permettant de patrouiller, de poursuivre le joueur, 
+#      et d'attaquer lorsqu'ils sont en proximité.
+# 
+# 5. Inspiration de Doom :
+#    - Le style visuel et le gameplay de ce projet s'inspirent fortement de Doom, 
+#      l'un des premiers jeux à populariser le genre FPS en utilisant des graphismes en 2.5D.
+#    - Le jeu utilise des techniques de raycasting pour déterminer la visibilité et la distance des murs, des ennemis, 
+#      et d'autres objets dans le monde du jeu.
+#    - Les sprites ennemis et les animations rappellent les graphismes de Doom, où des images 2D sont utilisées pour représenter des objets 3D.
+
+
 import os
 import pygame as pg
 import numpy as np
 from numba import njit
+
 
 class Game:
     def __init__(self, root_dir):
@@ -9,6 +57,7 @@ class Game:
         pg.init()
         pg.mixer.init()
 
+        # Chargement des sons
         (self.step, self.step2, self.swoosh, self.hurt, self.deadmonster, self.hitmonster,
          self.hitmonster2, self.healthup, self.died, self.won, self.music) = self.load_sounds()
         
@@ -21,17 +70,20 @@ class Game:
         pg.mouse.set_visible(False)
         pg.event.set_grab(1)
 
-        self.hres = 250  # horizontal resolution
-        self.halfvres = int(self.hres * 0.375)  # vertical resolution/2
-        self.mod = self.hres / 60  # scaling factor (60° fov)
+        # Initialisation des paramètres de résolution
+        self.hres = 250  # résolution horizontale
+        self.halfvres = int(self.hres * 0.375)  # moitié de la résolution verticale
+        self.mod = self.hres / 60  # facteur de mise à l'échelle (champ de vision de 60°)
 
+        # Génération de la carte et initialisation des ennemis
         self.size = 25
-        self.nenemies = self.size * 2  # number of enemies
+        self.nenemies = self.size * 2  # nombre d'ennemis
         self.posx, self.posy, self.rot, self.maph, self.mapc, self.exitx, self.exity = self.gen_map(self.size)
         self.stepscount = self.posx + self.posy
         self.player_health = 10
         self.rotv = 0
         
+        # Initialisation du framebuffer et chargement des textures
         self.frame = np.random.uniform(0, 1, (self.hres, self.halfvres * 2, 3))
         self.sky = pg.image.load(self.get_asset_path('../game/assets/textures/skybox2.jpg'))
         self.sky = pg.surfarray.array3d(pg.transform.smoothscale(self.sky, (720, self.halfvres * 4))) / 255
@@ -222,7 +274,7 @@ class Game:
 
     def draw_sprites(self, surf, sprites, enemies, spsize, hres, halfvres, ticks, sword, swordsp, rotv):
         offset = int(rotv * halfvres)
-        cycle = int(ticks) % 3  # animation cycle for monsters
+        cycle = int(ticks) % 3  # cycle d'animation pour les monstres
         for en in range(len(enemies)):
             if enemies[en][3] >  10:
                 break
@@ -234,7 +286,7 @@ class Game:
             spsurf = pg.transform.scale(sprites[types][cycle][dir2p], scale)
             surf.blit(spsurf, (hor, vert) - scale / 2)
 
-        swordpos = (np.sin(ticks) * 10 * hres / 800, (np.cos(ticks) * 10 + 15) * hres / 800)  # sword shake
+        swordpos = (np.sin(ticks) * 10 * hres / 800, (np.cos(ticks) * 10 + 15) * hres / 800)  # shake de l'épée
         surf.blit(sword[int(swordsp)], swordpos)
 
         return surf, en - 1

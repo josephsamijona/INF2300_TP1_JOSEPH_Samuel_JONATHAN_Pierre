@@ -24,6 +24,7 @@ class Fighter:
         self.sound = sound
 
     def load_images(self, sprite_sheet, animation_steps):
+        # Charger les images à partir de la feuille de sprites
         animation_list = []
         for y, animation in enumerate(animation_steps):
             temp_img_list = []

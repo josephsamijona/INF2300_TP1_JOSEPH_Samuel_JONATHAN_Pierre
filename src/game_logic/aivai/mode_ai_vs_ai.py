@@ -3,6 +3,9 @@ from pygame import mixer
 import os
 from src.game_logic.aivai.logicaivai import Fighter
 
+# Ce code met en œuvre un mode de jeu où deux combattants contrôlés par l'IA s'affrontent.
+# Les concepts de programmation graphique et de gestion des animations sont appliqués pour créer un jeu dynamique et interactif.
+
 class Gameaivai:
     def __init__(self, root_dir):
         # Initialiser le mixeur et Pygame
@@ -61,10 +64,8 @@ class Gameaivai:
         self.wizard_sheet = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "characters", "wizard", "Sprites", "wizard.png")).convert_alpha()
 
         # Charger l'image de victoire
-       # Charger et redimensionner l'image de victoire
         self.victory_img = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "icons", "victory.png")).convert_alpha()
         self.victory_img = pygame.transform.scale(self.victory_img, (800, 800))
-
 
         # Définir le nombre d'étapes dans chaque animation
         self.WARRIOR_ANIMATION_STEPS = [10, 8, 1, 7, 7, 3, 7]
@@ -142,7 +143,6 @@ class Gameaivai:
                     self.round_over = True
                     self.round_over_time = pygame.time.get_ticks()
             else:
-                # Afficher l'image de victoire
                 # Afficher l'image de victoire au centre de l'écran
                 victory_rect = self.victory_img.get_rect(center=(self.SCREEN_WIDTH // 2, self.SCREEN_HEIGHT // 2))
                 self.screen.blit(self.victory_img, victory_rect.topleft)

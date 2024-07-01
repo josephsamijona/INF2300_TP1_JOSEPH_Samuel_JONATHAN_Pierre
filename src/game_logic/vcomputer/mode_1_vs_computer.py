@@ -3,7 +3,11 @@ from pygame import mixer
 import os
 from src.game_logic.vcomputer.logic1vcom import Fighter
 
- 
+# Ce code implémente le mode de jeu 1v1 où le joueur combat contre un adversaire contrôlé par l'ordinateur.
+# Inspiré par les jeux de combat classiques, ce projet recrée une expérience de duel en utilisant Pygame 
+# pour la gestion des graphismes, des sons et des événements. Le jeu comprend des éléments comme la gestion 
+# de la santé, les animations de combat, et les effets sonores pour une immersion totale.
+
 class Game1vsc:
     def __init__(self, root_dir):
         # Initialiser le mixeur et Pygame
