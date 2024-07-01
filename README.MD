@@ -38,38 +38,66 @@ Tous les assets utilisés dans ce projet proviennent de [itch.io](https://itch.i
 
 ![Features](https://img.shields.io/badge/FEATURES-Awesome-red)
 
-## Structure du Projet
-├── game
-│ ├── assets
-│ │ ├── audio
-│ │ ├── backgrounds
-│ │ ├── fonts
-│ │ ├── icons
-│ │ ├── music
-│ │ ├── sfx
-│ │ ├── sprites
-│ │ └── textures
-│ └── logic
-│ ├── unvdeux
-│ │ ├── logic1v2.py
-│ │ └── mode_1_vs_2.py
-│ ├── vcomputer
-│ │ ├── logic1vsc.py
-│ │ └── mode_1_vs_computer.py
-│ ├── aivai
-│ │ ├── logicaivai.py
-│ │ └── mode_ai_vs_ai.py
-│ └── trid
-│ ├── logic3d.py
-│ └── mode_3d_adventure.py
-├── src
-│ ├── controls_settings.py
-│ ├── credits.py
-│ ├── game_modes.py
-│ ├── menu.py
-│ ├── settings.py
-│ └── main.py
-└── README.md
+
+## Structure du Système de Fichiers
+
+```plaintext
+
+BladesOfHonor/
+│
+├── assets/
+│   ├── audio/
+│   │   ├── sword.wav
+│   │   ├── magic.wav
+│   ├── backgrounds/
+│   │   ├── menu_background.png
+│   │   ├── moon.png
+│   ├── characters/
+│   │   ├── warrior/
+│   │   │   ├── Sprites/
+│   │   │   │   ├── warrior.png
+│   │   ├── wizard/
+│   │   │   ├── Sprites/
+│   │   │   │   ├── wizard.png
+│   ├── fonts/
+│   │   ├── Seagram tfb.ttf
+│   ├── icons/
+│   │   ├── victory.png
+│   │   ├── defeat.png
+│   ├── music/
+│   │   ├── intro.mp3
+│   │   ├── LEMMiNO - Cipher (BGM).mp3
+│   ├── video/
+│   │   ├── intro.mp4
+│
+├── src/
+│   ├── game_logic/
+│   │   ├── unvdeux/
+│   │   │   ├── logic1v2.py
+│   │   │   ├── mode_1_vs_2.py
+│   │   ├── vcomputer/
+│   │   │   ├── logic1vcom.py
+│   │   │   ├── mode_1_vs_computer.py
+│   │   ├── ai_vs_ai/
+│   │   │   ├── logic_ai_vs_ai.py
+│   │   │   ├── mode_ai_vs_ai.py
+│   │   ├── three_d/
+│   │   │   ├── mode_3d_adventure.py
+│   │   │   ├── shaders/
+│   │   │   │   ├── vertex_shader.glsl
+│   │   │   │   ├── fragment_shader.glsl
+│   ├── intro.py
+│   ├── menu.py
+│   ├── settings.py
+│   ├── credits.py
+│   ├── game_modes.py
+│   ├── player.py
+│   ├── npc.py
+│
+├── requirements.txt
+├── README.md
+└── main.py
+
 
 ## Instructions d'Installation
 
