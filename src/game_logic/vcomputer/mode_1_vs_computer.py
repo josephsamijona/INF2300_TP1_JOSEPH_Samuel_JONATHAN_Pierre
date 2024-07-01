@@ -2,11 +2,7 @@ import pygame
 from pygame import mixer
 import os
 from src.game_logic.vcomputer.logic1vcom import Fighter
-
-# Ce code implémente le mode de jeu 1v1 où le joueur combat contre un adversaire contrôlé par l'ordinateur.
-# Inspiré par les jeux de combat classiques, ce projet recrée une expérience de duel en utilisant Pygame 
-# pour la gestion des graphismes, des sons et des événements. Le jeu comprend des éléments comme la gestion 
-# de la santé, les animations de combat, et les effets sonores pour une immersion totale.
+from src.game_logic.vcomputer.paralaxus1 import Parallax
 
 class Game1vsc:
     def __init__(self, root_dir):
@@ -16,7 +12,7 @@ class Game1vsc:
 
         # Créer la fenêtre du jeu
         self.SCREEN_WIDTH = 1000
-        self.SCREEN_HEIGHT = 600
+        self.SCREEN_HEIGHT = 400
         self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         pygame.display.set_caption("Blades of Honor: Clash of Cultures")
 
@@ -58,8 +54,12 @@ class Game1vsc:
         self.magic_fx = pygame.mixer.Sound(os.path.join(self.root_dir, "..", "game", "assets", "audio", "magic.wav"))
         self.magic_fx.set_volume(0.75)
 
-        # Charger l'image de fond
-        self.bg_image = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "backgrounds", "moon.png")).convert_alpha()
+        # Charger les images de fond pour le parallax
+        self.bg_images = [pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "backgrounds", f"plx-0.png")).convert_alpha() for i in range(1, 6)]
+        self.ground_image = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "backgrounds", "ground.png")).convert_alpha()
+
+        # Initialiser Parallax
+        self.parallax = Parallax(self.screen, self.SCREEN_WIDTH, self.SCREEN_HEIGHT, self.bg_images, self.ground_image, self.FPS)
 
         # Charger les feuilles de sprites
         self.warrior_sheet = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "characters", "warrior", "Sprites", "warrior.png")).convert_alpha()
@@ -88,11 +88,6 @@ class Game1vsc:
         img = font.render(text, True, text_col)
         self.screen.blit(img, (x, y))
 
-    # Fonction pour dessiner le fond
-    def draw_bg(self):
-        scaled_bg = pygame.transform.scale(self.bg_image, (self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
-        self.screen.blit(scaled_bg, (0, 0))
-
     # Fonction pour dessiner les barres de santé des combattants
     def draw_health_bar(self, health, x, y):
         ratio = health / 100
@@ -106,8 +101,8 @@ class Game1vsc:
         while run:
             self.clock.tick(self.FPS)
 
-            # Dessiner le fond
-            self.draw_bg()
+            # Dessiner le fond avec l'effet parallax
+            self.parallax.draw()
 
             # Afficher les statistiques des joueurs
             self.draw_health_bar(self.fighter_1.health, 20, 20)
@@ -172,3 +167,4 @@ class Game1vsc:
 
         # Quitter Pygame
         pygame.quit()
+

@@ -2,8 +2,8 @@ import pygame
 from pygame import mixer
 import os
 from src.game_logic.unvdeux.logic1v2 import Fighter
-
- 
+#from src.game_logic.unvdeux.paralaxus2 import Parallax
+from src.game_logic.unvdeux.para import Parallax
 # Le but est d'établir la logique du jeu, gérer les combats, les animations, et les interactions entre les combattants.
 
 class Game1vs2:
@@ -56,8 +56,12 @@ class Game1vs2:
         self.magic_fx = pygame.mixer.Sound(os.path.join(self.root_dir, "..", "game", "assets", "audio", "magic.wav"))
         self.magic_fx.set_volume(0.75)
 
-        # Charger l'image de fond
-        self.bg_image = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "backgrounds", "moon.png")).convert_alpha()
+        # Charger les images de fond pour le parallax
+        self.bg_images = [pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "backgrounds", f"NV_Pink20240619_060513.png")).convert_alpha() for i in range(1, 6)]
+        self.ground_image = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "backgrounds", "ground.png")).convert_alpha()
+
+        # Initialiser Parallax
+        self.parallax = Parallax(self.screen, self.SCREEN_WIDTH, self.SCREEN_HEIGHT, self.bg_images, self.ground_image, self.FPS)
 
         # Charger les feuilles de sprites
         self.warrior_sheet = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "characters", "warrior", "Sprites", "warrior.png")).convert_alpha()
@@ -84,11 +88,6 @@ class Game1vs2:
         img = font.render(text, True, text_col)
         self.screen.blit(img, (x, y))
 
-    # Fonction pour dessiner le fond
-    def draw_bg(self):
-        scaled_bg = pygame.transform.scale(self.bg_image, (self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
-        self.screen.blit(scaled_bg, (0, 0))
-
     # Fonction pour dessiner les barres de santé des combattants
     def draw_health_bar(self, health, x, y):
         ratio = health / 100
@@ -102,8 +101,8 @@ class Game1vs2:
         while run:
             self.clock.tick(self.FPS)
 
-            # Dessiner le fond
-            self.draw_bg()
+            # Dessiner le fond avec l'effet parallax
+            self.parallax.draw()
 
             # Afficher les statistiques des joueurs
             self.draw_health_bar(self.fighter_1.health, 20, 20)
