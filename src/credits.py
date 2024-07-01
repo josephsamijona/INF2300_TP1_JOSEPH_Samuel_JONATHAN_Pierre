@@ -143,6 +143,11 @@ def show_credits(screen):
                     click_sound.play()
                     return
 
+        # Pipeline de transformation et pipeline graphique programmable, comme étapes pour l’animation :
+        # Ce pipeline fait référence aux étapes personnalisables dans le rendu graphique, telles que les vertex et fragment shaders.
+        # Le code initialise la fenêtre de jeu et appelle des fonctions qui pourraient inclure des animations et transformations graphiques.
+        # La gestion de la scène peut inclure des transformations (déplacements, rotations, mises à l'échelle) et des animations pour rendre l'interface interactive.
+
         # Lire et afficher la vidéo
         ret, frame = cap.read()
         if not ret:

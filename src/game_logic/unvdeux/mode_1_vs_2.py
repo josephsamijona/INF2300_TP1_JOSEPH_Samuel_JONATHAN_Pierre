@@ -3,6 +3,9 @@ from pygame import mixer
 import os
 from src.game_logic.unvdeux.logic1v2 import Fighter
 
+ 
+# Le but est d'établir la logique du jeu, gérer les combats, les animations, et les interactions entre les combattants.
+
 class Game1vs2:
     def __init__(self, root_dir):
         # Initialiser le mixeur et Pygame
@@ -25,11 +28,11 @@ class Game1vs2:
         self.WHITE = (255, 255, 255)
 
         # Définir les variables de jeu
-        self.intro_count = 3
-        self.last_count_update = pygame.time.get_ticks()
-        self.score = [0, 0]  # scores des joueurs [P1, P2]
-        self.round_over = False
-        self.ROUND_OVER_COOLDOWN = 2000
+        self.intro_count = 3  # Compte à rebours avant le début du round
+        self.last_count_update = pygame.time.get_ticks()  # Dernière mise à jour du compte à rebours
+        self.score = [0, 0]  # Scores des joueurs [P1, P2]
+        self.round_over = False  # Indique si le round est terminé
+        self.ROUND_OVER_COOLDOWN = 2000  # Temps d'attente avant le début du prochain round
 
         # Définir les variables des combattants
         self.WARRIOR_SIZE = 162
@@ -60,11 +63,9 @@ class Game1vs2:
         self.warrior_sheet = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "characters", "warrior", "Sprites", "warrior.png")).convert_alpha()
         self.wizard_sheet = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "characters", "wizard", "Sprites", "wizard.png")).convert_alpha()
 
-        # Charger l'image de victoire
-       # Charger et redimensionner l'image de victoire
+        # Charger et redimensionner l'image de victoire
         self.victory_img = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "icons", "victory.png")).convert_alpha()
         self.victory_img = pygame.transform.scale(self.victory_img, (800, 800))
-
 
         # Définir le nombre d'étapes dans chaque animation
         self.WARRIOR_ANIMATION_STEPS = [10, 8, 1, 7, 7, 3, 7]
@@ -142,7 +143,6 @@ class Game1vs2:
                     self.round_over = True
                     self.round_over_time = pygame.time.get_ticks()
             else:
-                # Afficher l'image de victoire
                 # Afficher l'image de victoire au centre de l'écran
                 victory_rect = self.victory_img.get_rect(center=(self.SCREEN_WIDTH // 2, self.SCREEN_HEIGHT // 2))
                 self.screen.blit(self.victory_img, victory_rect.topleft)

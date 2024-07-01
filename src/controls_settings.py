@@ -28,12 +28,15 @@ class Button:
         self.hovered = self.rect.collidepoint(mouse_pos)
 
 def show_fight_keys(screen):
+    # Obtenir le chemin absolu des fichiers nécessaires
     current_dir = os.path.dirname(os.path.abspath(__file__))
     icon_path = os.path.join(current_dir, "../game/assets/icons/")
     video_path = os.path.join(current_dir, "../game/assets/video/sunset.mp4")
     
+    # Charger la vidéo avec OpenCV
     cap = cv2.VideoCapture(video_path)
 
+    # Définir les touches de contrôle pour le mode combat
     keys = [
         ("Déplacer gauche", "ARROWLEFT.png"),
         ("Déplacer droite", "ARROWRIGHT.png"),
@@ -42,10 +45,12 @@ def show_fight_keys(screen):
         ("Retour", "RETURN.png")
     ]
     
+    # Définir la police et la taille
     font_path = os.path.join(current_dir, "../game/assets/fonts/Seagram tfb.ttf")
     font = pygame.font.Font(font_path, 50)
     title_font = pygame.font.Font(font_path, 80)
 
+    # Créer les boutons avec icônes
     buttons = []
     button_width = 400
     button_height = 60
@@ -73,6 +78,7 @@ def show_fight_keys(screen):
                     if button.hovered and button.text == "Retour":
                         return
 
+        # Lire et afficher la vidéo
         ret, frame = cap.read()
         if not ret:
             cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
@@ -83,10 +89,12 @@ def show_fight_keys(screen):
             frame_surface = pygame.surfarray.make_surface(frame.swapaxes(0, 1))
             screen.blit(frame_surface, (0, 0))
 
+        # Afficher le titre
         title_text = title_font.render("Touches de Combat", True, (255, 255, 255))
         title_rect = title_text.get_rect(center=(screen.get_width() / 2, 100))
         screen.blit(title_text, title_rect)
 
+        # Afficher les boutons avec icônes
         for button, icon in buttons:
             button.check_hover(mouse_pos)
             button.draw(screen)
@@ -97,12 +105,15 @@ def show_fight_keys(screen):
         clock.tick(30)
 
 def show_adventure_keys(screen):
+    # Obtenir le chemin absolu des fichiers nécessaires
     current_dir = os.path.dirname(os.path.abspath(__file__))
     icon_path = os.path.join(current_dir, "../game/assets/icons/")
     video_path = os.path.join(current_dir, "../game/assets/video/forest.mp4")
     
+    # Charger la vidéo avec OpenCV
     cap = cv2.VideoCapture(video_path)
 
+    # Définir les touches de contrôle pour le mode aventure
     keys = [
         ("Déplacer gauche", "ARROWLEFT.png"),
         ("Déplacer droite", "ARROWRIGHT.png"),
@@ -111,10 +122,12 @@ def show_adventure_keys(screen):
         ("Retour", "RETURN.png")
     ]
     
+    # Définir la police et la taille
     font_path = os.path.join(current_dir, "../game/assets/fonts/Seagram tfb.ttf")
     font = pygame.font.Font(font_path, 50)
     title_font = pygame.font.Font(font_path, 80)
 
+    # Créer les boutons avec icônes
     buttons = []
     button_width = 400
     button_height = 60
@@ -142,6 +155,7 @@ def show_adventure_keys(screen):
                     if button.hovered and button.text == "Retour":
                         return
 
+        # Lire et afficher la vidéo
         ret, frame = cap.read()
         if not ret:
             cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
@@ -152,10 +166,12 @@ def show_adventure_keys(screen):
             frame_surface = pygame.surfarray.make_surface(frame.swapaxes(0, 1))
             screen.blit(frame_surface, (0, 0))
 
+        # Afficher le titre
         title_text = title_font.render("Touches d'Aventure", True, (255, 255, 255))
         title_rect = title_text.get_rect(center=(screen.get_width() / 2, 100))
         screen.blit(title_text, title_rect)
 
+        # Afficher les boutons avec icônes
         for button, icon in buttons:
             button.check_hover(mouse_pos)
             button.draw(screen)
@@ -166,29 +182,36 @@ def show_adventure_keys(screen):
         clock.tick(30)
 
 def show_settings_screen(screen):
+    # Obtenir le chemin absolu des fichiers nécessaires
     current_dir = os.path.dirname(os.path.abspath(__file__))
     video_path = os.path.join(current_dir, "../game/assets/video/jap.mp4")
     click_sound_path = os.path.join(current_dir, "../game/assets/sfx/click.wav")
     hover_sound_path = os.path.join(current_dir, "../game/assets/sfx/hover.wav")
 
+    # Charger la vidéo avec OpenCV
     cap = cv2.VideoCapture(video_path)
 
+    # Initialiser Pygame Mixer pour le son de fond
     sound_path = os.path.join(current_dir, "../game/assets/music/LEMMiNO - Cipher (BGM).mp3")
     pygame.mixer.init()
     if not pygame.mixer.music.get_busy():
         pygame.mixer.music.load(sound_path)
         pygame.mixer.music.play(-1)  # Jouer en boucle
 
+    # Charger les sons de clic et de survol
     click_sound = pygame.mixer.Sound(click_sound_path)
     hover_sound = pygame.mixer.Sound(hover_sound_path)
 
+    # Définir les options de paramètres
     settings_items = ["Fight", "Adventure", "Retour"]
     selected_item = 0
 
+    # Définir la police et la taille
     font_path = os.path.join(current_dir, "../game/assets/fonts/Seagram tfb.ttf")
     font = pygame.font.Font(font_path, 50)
     title_font = pygame.font.Font(font_path, 80)
 
+    # Créer les boutons de paramètres
     buttons = []
     button_width = 400
     button_height = 60
@@ -229,6 +252,7 @@ def show_settings_screen(screen):
                         elif i == 2:
                             return
 
+        # Lire et afficher la vidéo
         ret, frame = cap.read()
         if not ret:
             cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
@@ -239,10 +263,12 @@ def show_settings_screen(screen):
             frame_surface = pygame.surfarray.make_surface(frame.swapaxes(0, 1))
             screen.blit(frame_surface, (0, 0))
 
+        # Afficher le titre des paramètres
         title_text = title_font.render("Paramètres", True, (255, 255, 255))
         title_rect = title_text.get_rect(center=(screen.get_width() / 2, 100))
         screen.blit(title_text, title_rect)
 
+        # Afficher les boutons de paramètres
         for button in buttons:
             button.check_hover(mouse_pos)
             if button.hovered and not hover_states[button.text]:

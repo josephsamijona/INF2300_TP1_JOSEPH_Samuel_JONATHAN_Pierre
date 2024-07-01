@@ -32,6 +32,9 @@ class Button:
         self.hovered = self.rect.collidepoint(mouse_pos)
 
 def show_game_modes(screen, root_dir):
+    # Programmation graphique avec pygame
+    # Utilisation de pygame pour gérer les fenêtres et les événements utilisateur, souvent couplé avec PyOpenGL pour les graphismes avancés.
+
     # Obtenir le chemin absolu du fichier vidéo de fond
     current_dir = os.path.dirname(os.path.abspath(__file__))
     video_path = os.path.join(current_dir, "../game/assets/video/3_background.mp4")
@@ -115,6 +118,11 @@ def show_game_modes(screen, root_dir):
                         elif i == 4:
                             return
 
+        # Pipeline de transformation et pipeline graphique programmable, comme étapes pour l’animation :
+        # Ce pipeline fait référence aux étapes personnalisables dans le rendu graphique, telles que les vertex et fragment shaders.
+        # Le code initialise la fenêtre de jeu et appelle des fonctions qui pourraient inclure des animations et transformations graphiques.
+        # La gestion de la scène peut inclure des transformations (déplacements, rotations, mises à l'échelle) et des animations pour rendre l'interface interactive.
+
         # Lire et afficher la vidéo
         ret, frame = cap.read()
         if not ret:
@@ -150,6 +158,11 @@ def show_game_modes(screen, root_dir):
             button.draw(screen)
             buttons.append(button)
 
+        # Opérations sur les fragments, illumination et textures :
+        # Les opérations sur les fragments incluent les calculs sur les pixels avant l'affichage, comme l'illumination et les textures.
+        # Les fonctions de ce code peuvent appliquer des textures sur les éléments graphiques et gérer l'éclairage pour améliorer l'esthétique.
+        # Par exemple, les textures peuvent être utilisées pour les arrière-plans et les éléments de l'interface utilisateur, tandis que l'illumination peut créer des effets de lumière réalistes.
+
         pygame.display.flip()
         clock.tick(30)
 
@@ -167,3 +180,4 @@ if __name__ == "__main__":
 
     show_game_modes(screen, os.path.dirname(os.path.abspath(__file__)))
     pygame.quit()
+

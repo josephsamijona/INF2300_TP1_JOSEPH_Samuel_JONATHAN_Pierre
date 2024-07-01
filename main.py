@@ -11,27 +11,7 @@
 # 
 # [6/20/2024]
 
-"""
-Ce fichier main.py sert de point d'entrée principal pour le jeu de combat en 2D.
-Il initialise les bibliothèques Pygame et OpenGL, configure la fenêtre principale,
-et définit les paramètres de base pour OpenGL.
-
-Les étapes principales du script sont les suivantes :
-1. Initialisation de Pygame pour gérer la fenêtre et les événements.
-2. Configuration de la fenêtre principale avec une taille de 800x600 pixels,
-   utilisant OpenGL pour le rendu graphique et le double buffering pour éviter
-   le scintillement.
-3. Initialisation des paramètres OpenGL, y compris l'activation du mélange pour
-   gérer la transparence et la définition de la couleur de fond de la fenêtre.
-4. Affichage de l'intro vidéo du jeu en appelant la fonction show_intro.
-5. Affichage du menu principal du jeu en appelant la fonction show_menu.
-6. Nettoyage et fermeture de Pygame lors de la sortie du jeu.
-
-Ce script constitue la base du jeu, et les fonctionnalités supplémentaires telles
-que les modes de jeu, la sélection des personnages, les paramètres et les crédits
-seront développées dans des modules séparés et intégrées via les appels de fonction
-dans ce fichier principal.
-"""
+# Importation de la bibliothèque Pygame pour la gestion de la fenêtre et des événements
 import pygame
 from src.intro import show_intro
 from src.menu import show_menu
@@ -40,9 +20,18 @@ def main():
     # Initialisation de Pygame
     pygame.init()
     
+    # Programmation graphique - OpenGL en Python :
+    # Ici, nous avons utilisé pygame, une bibliothèque Python pour les jeux vidéo qui simplifie la création de fenêtres et la gestion des événements utilisateur.
+    # Bien que ce code ne montre pas directement l'utilisation d'OpenGL, pygame est souvent utilisé conjointement avec PyOpenGL pour les graphismes avancés.
+    
     # Configuration de la fenêtre principale avec Pygame
     screen = pygame.display.set_mode((1200, 600))
     pygame.display.set_caption("Blades of Honor: Clash of Cultures")
+    
+    # Pipeline de transformation et pipeline graphique programmable, comme étapes pour l’animation :
+    # Le pipeline graphique programmable fait référence aux étapes personnalisables dans le processus de rendu graphique, telles que les vertex et fragment shaders.
+    # Dans ce contexte, le code initialise la fenêtre de jeu et appelle les fonctions show_intro et show_menu, qui pourraient inclure des animations et des transformations graphiques.
+    # La gestion de la scène et des objets de jeu peut inclure des transformations (comme les déplacements, rotations, et mises à l'échelle) et des animations pour rendre l'intro et le menu interactifs et visuellement attrayants.
     
     # Afficher l'intro
     print("Lancement de l'intro")
@@ -52,6 +41,12 @@ def main():
     print("Affichage du menu principal")
     show_menu(screen)
 
+    # Opérations sur les fragments, illumination et textures :
+    # Les opérations sur les fragments concernent les calculs effectués sur les pixels avant l'affichage, incluant l'illumination et les textures.
+    # Bien que ce code principal n'inclue pas directement ces opérations, les fonctions show_intro et show_menu peuvent appliquer des textures sur les éléments graphiques et gérer l'éclairage pour améliorer l'esthétique du jeu.
+    # Par exemple, les textures peuvent être utilisées pour les arrière-plans et les éléments de l'interface utilisateur, tandis que l'illumination peut créer des effets de lumière réalistes pour améliorer l'immersion.
+
+    # Quitter Pygame
     pygame.quit()
 
 if __name__ == "__main__":
