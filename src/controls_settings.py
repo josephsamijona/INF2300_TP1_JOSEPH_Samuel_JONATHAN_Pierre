@@ -30,7 +30,10 @@ class Button:
 def show_fight_keys(screen):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     icon_path = os.path.join(current_dir, "../game/assets/icons/")
+    video_path = os.path.join(current_dir, "../game/assets/video/sunset.mp4")
     
+    cap = cv2.VideoCapture(video_path)
+
     keys = [
         ("Déplacer gauche", "ARROWLEFT.png"),
         ("Déplacer droite", "ARROWRIGHT.png"),
@@ -39,7 +42,6 @@ def show_fight_keys(screen):
         ("Retour", "RETURN.png")
     ]
     
-    # Définir la police et la taille
     font_path = os.path.join(current_dir, "../game/assets/fonts/Seagram tfb.ttf")
     font = pygame.font.Font(font_path, 50)
     title_font = pygame.font.Font(font_path, 80)
@@ -71,9 +73,16 @@ def show_fight_keys(screen):
                     if button.hovered and button.text == "Retour":
                         return
 
-        screen.fill((0, 0, 0))
+        ret, frame = cap.read()
+        if not ret:
+            cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+            ret, frame = cap.read()
+        if frame is not None:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frame = cv2.resize(frame, (screen.get_width(), screen.get_height()))
+            frame_surface = pygame.surfarray.make_surface(frame.swapaxes(0, 1))
+            screen.blit(frame_surface, (0, 0))
 
-        # Afficher le titre des touches de combat
         title_text = title_font.render("Touches de Combat", True, (255, 255, 255))
         title_rect = title_text.get_rect(center=(screen.get_width() / 2, 100))
         screen.blit(title_text, title_rect)
@@ -90,7 +99,10 @@ def show_fight_keys(screen):
 def show_adventure_keys(screen):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     icon_path = os.path.join(current_dir, "../game/assets/icons/")
+    video_path = os.path.join(current_dir, "../game/assets/video/forest.mp4")
     
+    cap = cv2.VideoCapture(video_path)
+
     keys = [
         ("Déplacer gauche", "ARROWLEFT.png"),
         ("Déplacer droite", "ARROWRIGHT.png"),
@@ -99,7 +111,6 @@ def show_adventure_keys(screen):
         ("Retour", "RETURN.png")
     ]
     
-    # Définir la police et la taille
     font_path = os.path.join(current_dir, "../game/assets/fonts/Seagram tfb.ttf")
     font = pygame.font.Font(font_path, 50)
     title_font = pygame.font.Font(font_path, 80)
@@ -131,9 +142,16 @@ def show_adventure_keys(screen):
                     if button.hovered and button.text == "Retour":
                         return
 
-        screen.fill((0, 0, 0))
+        ret, frame = cap.read()
+        if not ret:
+            cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+            ret, frame = cap.read()
+        if frame is not None:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frame = cv2.resize(frame, (screen.get_width(), screen.get_height()))
+            frame_surface = pygame.surfarray.make_surface(frame.swapaxes(0, 1))
+            screen.blit(frame_surface, (0, 0))
 
-        # Afficher le titre des touches d'aventure
         title_text = title_font.render("Touches d'Aventure", True, (255, 255, 255))
         title_rect = title_text.get_rect(center=(screen.get_width() / 2, 100))
         screen.blit(title_text, title_rect)
@@ -148,36 +166,29 @@ def show_adventure_keys(screen):
         clock.tick(30)
 
 def show_settings(screen):
-    # Obtenir le chemin absolu des fichiers nécessaires
     current_dir = os.path.dirname(os.path.abspath(__file__))
     video_path = os.path.join(current_dir, "../game/assets/video/2_background.mp4")
     click_sound_path = os.path.join(current_dir, "../game/assets/sfx/click.wav")
     hover_sound_path = os.path.join(current_dir, "../game/assets/sfx/hover.wav")
 
-    # Charger la vidéo avec OpenCV
     cap = cv2.VideoCapture(video_path)
 
-    # Initialiser Pygame Mixer pour le son de fond
     sound_path = os.path.join(current_dir, "../game/assets/music/LEMMiNO - Cipher (BGM).mp3")
     pygame.mixer.init()
     if not pygame.mixer.music.get_busy():
         pygame.mixer.music.load(sound_path)
         pygame.mixer.music.play(-1)  # Jouer en boucle
 
-    # Charger les sons de clic et de survol
     click_sound = pygame.mixer.Sound(click_sound_path)
     hover_sound = pygame.mixer.Sound(hover_sound_path)
 
-    # Définir les options de paramètres
     settings_items = ["Fight", "Adventure", "Retour"]
     selected_item = 0
 
-    # Définir la police et la taille
     font_path = os.path.join(current_dir, "../game/assets/fonts/Seagram tfb.ttf")
     font = pygame.font.Font(font_path, 50)
     title_font = pygame.font.Font(font_path, 80)
 
-    # Créer les boutons des paramètres
     buttons = []
     button_width = 400
     button_height = 60
@@ -218,7 +229,6 @@ def show_settings(screen):
                         elif i == 2:
                             return
 
-        # Lire et afficher la vidéo
         ret, frame = cap.read()
         if not ret:
             cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
@@ -229,12 +239,10 @@ def show_settings(screen):
             frame_surface = pygame.surfarray.make_surface(frame.swapaxes(0, 1))
             screen.blit(frame_surface, (0, 0))
 
-        # Afficher le titre des paramètres
         title_text = title_font.render("Paramètres", True, (255, 255, 255))
         title_rect = title_text.get_rect(center=(screen.get_width() / 2, 100))
         screen.blit(title_text, title_rect)
 
-        # Afficher les boutons des paramètres
         for button in buttons:
             button.check_hover(mouse_pos)
             if button.hovered and not hover_states[button.text]:
