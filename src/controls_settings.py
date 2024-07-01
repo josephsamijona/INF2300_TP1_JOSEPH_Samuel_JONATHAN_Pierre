@@ -165,9 +165,9 @@ def show_adventure_keys(screen):
         pygame.display.flip()
         clock.tick(30)
 
-def show_settings(screen):
+def show_settings_screen(screen):
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    video_path = os.path.join(current_dir, "../game/assets/video/2_background.mp4")
+    video_path = os.path.join(current_dir, "../game/assets/video/jap.mp4")
     click_sound_path = os.path.join(current_dir, "../game/assets/sfx/click.wav")
     hover_sound_path = os.path.join(current_dir, "../game/assets/sfx/hover.wav")
 
@@ -261,5 +261,5 @@ def show_settings(screen):
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((1200, 800), pygame.RESIZABLE)
-    show_settings(screen)
+    show_settings_screen(screen)
     pygame.quit()

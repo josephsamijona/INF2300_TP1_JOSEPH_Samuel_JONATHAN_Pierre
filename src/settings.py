@@ -1,7 +1,7 @@
 import pygame
 import os
 import cv2
-from src.controls_settings import show_controls_settings
+from src.controls_settings import show_settings_screen
 
 class Button:
     def __init__(self, text, font, color, x, y, width, height):
@@ -85,9 +85,9 @@ def show_settings(screen):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     if selected_item == 0:
-                        show_controls_settings(screen)
+                        show_settings(screen)
                     elif selected_item == 1:
-                        show_volume_settings(screen)
+                        show_settings_screen(screen)
                     elif selected_item == 2:
                         return
             elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -95,7 +95,7 @@ def show_settings(screen):
                     if button.hovered:
                         click_sound.play()
                         if i == 0:
-                            show_controls_settings(screen)
+                            show_settings_screen(screen)
                         elif i == 1:
                             show_volume_settings(screen)
                         elif i == 2:
@@ -138,7 +138,7 @@ def show_volume_settings(screen):
     
     # Obtenir le chemin absolu des fichiers nécessaires
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    video_path = os.path.join(current_dir, "../game/assets/video/2_background.mp4")
+    video_path = os.path.join(current_dir, "../game/assets/video/flower.mp4")
     click_sound_path = os.path.join(current_dir, "../game/assets/sfx/click.wav")
     hover_sound_path = os.path.join(current_dir, "../game/assets/sfx/hover.wav")
 
