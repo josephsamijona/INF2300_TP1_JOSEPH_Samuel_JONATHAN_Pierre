@@ -41,7 +41,7 @@ Tous les assets utilisés dans ce projet proviennent de [itch.io](https://itch.i
 
 ## Structure du Système de Fichiers
 
-```plaintext
+``plaintext
 
 BladesOfHonor/
 │
