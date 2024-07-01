@@ -1,5 +1,6 @@
 import pygame
 import os
+import cv2
 from src.game_logic.unvdeux.mode_1_vs_2 import Game1vs2
 from src.game_logic.vcomputer.mode_1_vs_computer import Game1vsc
 from src.game_logic.aivai.mode_ai_vs_ai import Gameaivai
@@ -12,10 +13,14 @@ class Button:
         self.color = color
         self.rect = pygame.Rect(x, y, width, height)
         self.hovered = False
+        self.original_size = (width, height)
+        self.hovered_size = (int(width * 1.1), int(height * 1.1))
 
     def draw(self, screen):
         if self.hovered:
-            pygame.draw.rect(screen, (255, 255, 255), self.rect)
+            button_rect = pygame.Rect(self.rect.x, self.rect.y, *self.hovered_size)
+            button_rect.center = self.rect.center
+            pygame.draw.rect(screen, (255, 255, 255), button_rect)
         else:
             pygame.draw.rect(screen, self.color, self.rect)
         
@@ -27,12 +32,25 @@ class Button:
         self.hovered = self.rect.collidepoint(mouse_pos)
 
 def show_game_modes(screen, root_dir):
-    # Obtenir le chemin absolu du fichier image de fond
+    # Obtenir le chemin absolu du fichier vidéo de fond
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    background_path = os.path.join(current_dir, "../game/assets/backgrounds/menu_background.png")
+    video_path = os.path.join(current_dir, "../game/assets/video/3_background.mp4")
+    click_sound_path = os.path.join(current_dir, "../game/assets/sfx/click.wav")
+    hover_sound_path = os.path.join(current_dir, "../game/assets/sfx/hover.wav")
 
-    # Charger l'image de fond
-    background = pygame.image.load(background_path)
+    # Charger la vidéo avec OpenCV
+    cap = cv2.VideoCapture(video_path)
+
+    # Initialiser Pygame Mixer pour le son de fond
+    sound_path = os.path.join(current_dir, "../game/assets/music/LEMMiNO - Cipher (BGM).mp3")
+    pygame.mixer.init()
+    if not pygame.mixer.music.get_busy():
+        pygame.mixer.music.load(sound_path)
+        pygame.mixer.music.play(-1)  # Jouer en boucle
+
+    # Charger les sons de clic et de survol
+    click_sound = pygame.mixer.Sound(click_sound_path)
+    hover_sound = pygame.mixer.Sound(hover_sound_path)
 
     # Définir les options des modes de jeu
     game_mode_items = ["1 vs Computer", "1 vs 2", "AI vs AI", "3D Adventure", "Retour"]
@@ -44,6 +62,9 @@ def show_game_modes(screen, root_dir):
     title_font = pygame.font.Font(font_path, 80)
 
     clock = pygame.time.Clock()
+
+    # Variables pour suivre l'état du survol des boutons
+    hover_states = {item: False for item in game_mode_items}
 
     while True:
         mouse_pos = pygame.mouse.get_pos()
@@ -73,6 +94,7 @@ def show_game_modes(screen, root_dir):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for i, button in enumerate(buttons):
                     if button.hovered:
+                        click_sound.play()
                         if i == 0:
                             print("1 vs Computer sélectionné")
                             game = Game1vsc(root_dir)
@@ -93,9 +115,15 @@ def show_game_modes(screen, root_dir):
                         elif i == 4:
                             return
 
-        # Redimensionner l'image de fond
-        background = pygame.transform.scale(background, (screen.get_width(), screen.get_height()))
-        screen.blit(background, (0, 0))
+        # Lire et afficher la vidéo
+        ret, frame = cap.read()
+        if not ret:
+            cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+            ret, frame = cap.read()
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame = cv2.resize(frame, (screen.get_width(), screen.get_height()))
+        frame_surface = pygame.surfarray.make_surface(frame.swapaxes(0, 1))
+        screen.blit(frame_surface, (0, 0))
 
         # Afficher le titre des modes de jeu
         title_text = title_font.render("Modes de Jeu", True, (255, 255, 255))
@@ -114,11 +142,19 @@ def show_game_modes(screen, root_dir):
             button_y = button_y_start + i * button_y_padding
             button = Button(item, font, (200, 200, 200), button_x, button_y, button_width, button_height)
             button.check_hover(mouse_pos)
+            if button.hovered and not hover_states[item]:
+                hover_sound.play()
+                hover_states[item] = True
+            elif not button.hovered:
+                hover_states[item] = False
             button.draw(screen)
             buttons.append(button)
 
         pygame.display.flip()
         clock.tick(30)
+
+    cap.release()
+    pygame.quit()
 
 if __name__ == "__main__":
     pygame.init()
