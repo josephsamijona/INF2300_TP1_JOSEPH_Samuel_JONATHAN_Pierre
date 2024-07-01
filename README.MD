@@ -39,9 +39,57 @@ Tous les assets utilisés dans ce projet proviennent de [itch.io](https://itch.i
 ![Features](https://img.shields.io/badge/FEATURES-Awesome-red)
 
 
+
+
+
+## Instructions d'Installation
+
+1. Clonez ce dépôt sur votre machine locale :
+   ```sh
+   git clone https://github.com/josephsamijona/INF2300_TP1_JOSEPH_Samuel_JONATHAN_Pierre.git
+
+2. accédez au répertoire du projet : 
+   ```sh
+   cd INF2300_TP2_JOSEPH_Samuel_JONATHAN_Pierre
+
+3. installez les dépendances requises : 
+   ```sh
+   pip install -r requirements.txt
+
+
+
+4. lancez le jeu : 
+   ```sh
+   python main.py
+
+
+## contact
+nous sommes toujours ouverts aux questions, suggestions et messages d'encouragement (ou même de défis !) :
+
+📧 [isteah.josephsamuel@gmail.com](mailto:isteah.josephsamuel@gmail.com) – joseph samuel jonathan  
+📧 [isteah.jpierrelouis03@gmail.com](mailto:isteah.jpierrelouis03@gmail.com) – jonathan pierre louis
+
+## informations du cours
+- **📚 cours** : inf2300 infographie  
+- **🗓 session** : été 2024  
+- **📄 travail no.** : 2  
+- **👥 groupe** :
+  - joseph samuel jonathan
+  - jonathan pierre louis
+- **👩‍🏫 soumis à** : dre. franjieh el khoury  
+- **📅 date** : 20 juin 2024
+
+## remerciements
+un immense merci à nos professeurs, collègues, amis, et bien sûr, à vous, pour votre intérêt et votre soutien. et souvenez-vous : coder, c'est comme combattre – il faut de la stratégie, de la détermination, et parfois, un bon café ! ☕👨‍💻👩‍💻
+
+**merci d'avoir lu notre readme !** nous espérons que vous apprécierez jouer à notre jeu autant que nous avons aimé le créer. **que le code soit avec vous !** 🚀
+
+![thank you](https://github.com/josephsamijona/INF2300_TP1_JOSEPH_Samuel_JONATHAN_Pierre/raw/main/game/assets/video/Sunrise_animation.mp4)
+
+
 ## Structure du Système de Fichiers
 
-``plaintext
+```plaintext
 
 BladesOfHonor/
 │
@@ -97,50 +145,3 @@ BladesOfHonor/
 ├── requirements.txt
 ├── README.md
 └── main.py
-
-
-## Instructions d'Installation
-
-1. Clonez ce dépôt sur votre machine locale :
-   ```sh
-   git clone https://github.com/josephsamijona/INF2300_TP1_JOSEPH_Samuel_JONATHAN_Pierre.git
-
-2. accédez au répertoire du projet : 
-   ```sh
-   cd INF2300_TP2_JOSEPH_Samuel_JONATHAN_Pierre
-
-3. installez les dépendances requises : 
-   ```sh
-   pip install -r requirements.txt
-
-
-
-4. lancez le jeu : 
-   ```sh
-   python main.py
-
-
-## contact
-nous sommes toujours ouverts aux questions, suggestions et messages d'encouragement (ou même de défis !) :
-
-📧 [isteah.josephsamuel@gmail.com](mailto:isteah.josephsamuel@gmail.com) – joseph samuel jonathan  
-📧 [isteah.jpierrelouis03@gmail.com](mailto:isteah.jpierrelouis03@gmail.com) – jonathan pierre louis
-
-## informations du cours
-- **📚 cours** : inf2300 infographie  
-- **🗓 session** : été 2024  
-- **📄 travail no.** : 2  
-- **👥 groupe** :
-  - joseph samuel jonathan
-  - jonathan pierre louis
-- **👩‍🏫 soumis à** : dre. franjieh el khoury  
-- **📅 date** : 20 juin 2024
-
-## remerciements
-un immense merci à nos professeurs, collègues, amis, et bien sûr, à vous, pour votre intérêt et votre soutien. et souvenez-vous : coder, c'est comme combattre – il faut de la stratégie, de la détermination, et parfois, un bon café ! ☕👨‍💻👩‍💻
-
-**merci d'avoir lu notre readme !** nous espérons que vous apprécierez jouer à notre jeu autant que nous avons aimé le créer. **que le code soit avec vous !** 🚀
-
-![thank you](https://github.com/josephsamijona/INF2300_TP1_JOSEPH_Samuel_JONATHAN_Pierre/raw/main/game/assets/video/Sunrise_animation.mp4)
-
-
