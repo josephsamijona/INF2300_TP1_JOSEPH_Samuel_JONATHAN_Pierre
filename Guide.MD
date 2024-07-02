@@ -16,6 +16,8 @@ Ce fichier contient la logique pour le menu principal, permettant aux joueurs de
 - `src/game_logic/unvdeux/mode_1_vs_2.py`
 - `src/game_logic/vcomputer/mode_1_vs_computer.py`
 
+##NB : LA TOUCHE P pour retourner au menu jeu
+
 Chaque fichier représente un mode de jeu distinct. Ils contiennent la logique pour les interactions et les règles spécifiques à chaque mode.
 
 ### 🤖 3.1. Mode AI vs AI
