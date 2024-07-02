@@ -85,10 +85,10 @@ class Game:
         
         # Initialisation du framebuffer et chargement des textures
         self.frame = np.random.uniform(0, 1, (self.hres, self.halfvres * 2, 3))
-        self.sky = pg.image.load(self.get_asset_path('../game/assets/textures/skybox2.jpg'))
+        self.sky = pg.image.load(self.get_asset_path('game/assets/textures/skybox2.jpg'))
         self.sky = pg.surfarray.array3d(pg.transform.smoothscale(self.sky, (720, self.halfvres * 4))) / 255
-        self.floor = pg.surfarray.array3d(pg.image.load(self.get_asset_path('../game/assets/textures/floor.jpg'))) / 255
-        self.wall = pg.surfarray.array3d(pg.image.load(self.get_asset_path('../game/assets/textures/wall.jpg'))) / 255
+        self.floor = pg.surfarray.array3d(pg.image.load(self.get_asset_path('game/assets/textures/floor.jpg'))) / 255
+        self.wall = pg.surfarray.array3d(pg.image.load(self.get_asset_path('game/assets/textures/wall.jpg'))) / 255
         self.sprites, self.spsize, self.sword, self.swordsp = self.get_sprites(self.hres)
         
         self.enemies = self.spawn_enemies(self.nenemies, self.maph, self.size)
@@ -97,17 +97,17 @@ class Game:
         return os.path.join(self.root_dir, relative_path)
 
     def load_sounds(self):
-        step = pg.mixer.Sound(self.get_asset_path('../game/assets/sounds/playerstep.mp3'))
-        step2 = pg.mixer.Sound(self.get_asset_path('../game/assets/sounds/enemystep.mp3'))
-        swoosh = pg.mixer.Sound(self.get_asset_path('../game/assets/sounds/sword.mp3'))
-        hurt = pg.mixer.Sound(self.get_asset_path('../game/assets/sounds/damage.mp3'))
-        deadmonster = pg.mixer.Sound(self.get_asset_path('../game/assets/sounds/deadmonster.mp3'))
-        hitmonster = pg.mixer.Sound(self.get_asset_path('../game/assets/sounds/hitmonster.mp3'))
-        hitmonster2 = pg.mixer.Sound(self.get_asset_path('../game/assets/sounds/hitmonster2.mp3'))
-        healthup = pg.mixer.Sound(self.get_asset_path('../game/assets/sounds/healthup.wav'))
-        died = pg.mixer.Sound(self.get_asset_path('../game/assets/sounds/died.wav'))
-        won = pg.mixer.Sound(self.get_asset_path('../game/assets/sounds/won.wav'))
-        music = pg.mixer.Sound(self.get_asset_path('../game/assets/sounds/battlemusic0.mp3'))
+        step = pg.mixer.Sound(self.get_asset_path('game/assets/sounds/playerstep.mp3'))
+        step2 = pg.mixer.Sound(self.get_asset_path('game/assets/sounds/enemystep.mp3'))
+        swoosh = pg.mixer.Sound(self.get_asset_path('game/assets/sounds/sword.mp3'))
+        hurt = pg.mixer.Sound(self.get_asset_path('game/assets/sounds/damage.mp3'))
+        deadmonster = pg.mixer.Sound(self.get_asset_path('game/assets/sounds/deadmonster.mp3'))
+        hitmonster = pg.mixer.Sound(self.get_asset_path('game/assets/sounds/hitmonster.mp3'))
+        hitmonster2 = pg.mixer.Sound(self.get_asset_path('game/assets/sounds/hitmonster2.mp3'))
+        healthup = pg.mixer.Sound(self.get_asset_path('game/assets/sounds/healthup.wav'))
+        died = pg.mixer.Sound(self.get_asset_path('game/assets/sounds/died.wav'))
+        won = pg.mixer.Sound(self.get_asset_path('game/assets/sounds/won.wav'))
+        music = pg.mixer.Sound(self.get_asset_path('game/assets/sounds/battlemusic0.mp3'))
         music.set_volume(0.3)
         music.play(-1)
         won.play()
@@ -250,9 +250,9 @@ class Game:
         return spawn_enemies_njit(number, maph, msize)
 
     def get_sprites(self, hres):
-        sheet = pg.image.load(self.get_asset_path('../game/assets/sprites/zombie_n_skeleton4.png')).convert_alpha()
+        sheet = pg.image.load(self.get_asset_path('game/assets/sprites/zombie_n_skeleton4.png')).convert_alpha()
         sprites = [[], []]
-        swordsheet = pg.image.load(self.get_asset_path('../game/assets/sprites/sword1.png')).convert_alpha() 
+        swordsheet = pg.image.load(self.get_asset_path('game/assets/sprites/sword1.png')).convert_alpha() 
         sword = []
         for i in range(3):
             subsword = pg.Surface.subsurface(swordsheet, (i * 800, 0, 800, 600))

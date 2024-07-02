@@ -8,7 +8,7 @@ from src.navigation import return_to_menu
 
 vec2, vec3 = pg.math.Vector2, pg.math.Vector3
 
-RES = WIDTH, HEIGHT = 1200, 800
+RES = WIDTH, HEIGHT = 1200, 500
 NUM_STARS = 1500
 CENTER = vec2(WIDTH // 2, HEIGHT // 2)
 COLORS = 'red green blue orange purple cyan'.split()

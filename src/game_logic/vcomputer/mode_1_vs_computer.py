@@ -47,29 +47,29 @@ class Game1vsc:
         self.root_dir = root_dir
 
         # Charger la musique et les sons
-        pygame.mixer.music.load(os.path.join(self.root_dir, "..", "game", "assets", "music", "LEMMiNO - Cipher (BGM).mp3"))
+        pygame.mixer.music.load(os.path.join(self.root_dir,   "game", "assets", "music", "LEMMiNO - Cipher (BGM).mp3"))
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1, 0.0, 5000)
-        self.sword_fx = pygame.mixer.Sound(os.path.join(self.root_dir, "..", "game", "assets", "audio", "sword.wav"))
+        self.sword_fx = pygame.mixer.Sound(os.path.join(self.root_dir,   "game", "assets", "audio", "sword.wav"))
         self.sword_fx.set_volume(0.5)
-        self.magic_fx = pygame.mixer.Sound(os.path.join(self.root_dir, "..", "game", "assets", "audio", "magic.wav"))
+        self.magic_fx = pygame.mixer.Sound(os.path.join(self.root_dir,   "game", "assets", "audio", "magic.wav"))
         self.magic_fx.set_volume(0.75)
 
         # Charger les images de fond pour le parallax
-        self.bg_images = [pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "backgrounds", f"jap.png")).convert_alpha() for i in range(1, 6)]
-        self.ground_image = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "backgrounds", "ground.png")).convert_alpha()
+        self.bg_images = [pygame.image.load(os.path.join(self.root_dir,  "game", "assets", "backgrounds", f"jap.png")).convert_alpha() for i in range(1, 6)]
+        self.ground_image = pygame.image.load(os.path.join(self.root_dir,  "game", "assets", "backgrounds", "ground.png")).convert_alpha()
 
         # Initialiser Parallax
         self.parallax = Parallax(self.screen, self.SCREEN_WIDTH, self.SCREEN_HEIGHT, self.bg_images, self.ground_image, self.FPS)
 
         # Charger les feuilles de sprites
-        self.warrior_sheet = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "characters", "warrior", "Sprites", "warrior.png")).convert_alpha()
-        self.wizard_sheet = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "characters", "wizard", "Sprites", "wizard.png")).convert_alpha()
+        self.warrior_sheet = pygame.image.load(os.path.join(self.root_dir,   "game", "assets", "characters", "warrior", "Sprites", "warrior.png")).convert_alpha()
+        self.wizard_sheet = pygame.image.load(os.path.join(self.root_dir,   "game", "assets", "characters", "wizard", "Sprites", "wizard.png")).convert_alpha()
 
         # Charger et redimensionner les images de victoire et de défaite
-        self.victory_img = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "icons", "defeat.png")).convert_alpha()
+        self.victory_img = pygame.image.load(os.path.join(self.root_dir,   "game", "assets", "icons", "defeat.png")).convert_alpha()
         self.victory_img = pygame.transform.scale(self.victory_img, (800, 800))
-        self.defeat_img = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "icons", "victory.png")).convert_alpha()
+        self.defeat_img = pygame.image.load(os.path.join(self.root_dir, "game", "assets", "icons", "victory.png")).convert_alpha()
         self.defeat_img = pygame.transform.scale(self.defeat_img, (800, 800))
 
         # Définir le nombre d'étapes dans chaque animation
@@ -77,8 +77,8 @@ class Game1vsc:
         self.WIZARD_ANIMATION_STEPS = [8, 8, 1, 8, 8, 3, 7]
 
         # Définir la police
-        self.count_font = pygame.font.Font(os.path.join(self.root_dir, "..", "game", "assets", "fonts", "Seagram tfb.ttf"), 80)
-        self.score_font = pygame.font.Font(os.path.join(self.root_dir, "..", "game", "assets", "fonts", "Seagram tfb.ttf"), 30)
+        self.count_font = pygame.font.Font(os.path.join(self.root_dir,   "game", "assets", "fonts", "Seagram tfb.ttf"), 80)
+        self.score_font = pygame.font.Font(os.path.join(self.root_dir,   "game", "assets", "fonts", "Seagram tfb.ttf"), 30)
 
         # Créer deux instances de combattants
         self.fighter_1 = Fighter(1, 200, 310, False, self.WARRIOR_DATA, self.warrior_sheet, self.WARRIOR_ANIMATION_STEPS, self.sword_fx)

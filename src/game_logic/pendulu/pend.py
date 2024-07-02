@@ -110,7 +110,7 @@ class GamePendulum:
             pendulum.draw(screen)
 
             for particle in particles:
-                particle.update(800, 600)
+                particle.update(1200, 500)
                 particle.draw(screen)
 
             pygame.display.flip()
