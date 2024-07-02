@@ -49,7 +49,7 @@ import os
 import pygame as pg
 import numpy as np
 from numba import njit
-
+from src.navigation import return_to_menu
 
 class Game:
     def __init__(self, root_dir):
@@ -130,6 +130,9 @@ class Game:
             for event in pg.event.get():
                 if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                     self.running = False
+                if event.type == pg.KEYDOWN and event.key == pg.K_p:  # Ajout pour la touche 'P'
+                    self.running = False
+                    return_to_menu(self.screen, self.root_dir)
                 if self.swordsp < 1 and event.type == pg.MOUSEBUTTONDOWN:
                     self.swordsp = 1
                     
