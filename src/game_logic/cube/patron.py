@@ -4,10 +4,11 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 import random
 import math
+from src.navigation import return_to_menu
 
 vec2, vec3 = pg.math.Vector2, pg.math.Vector3
 
-RES = WIDTH, HEIGHT = 1200, 400
+RES = WIDTH, HEIGHT = 1200, 800
 NUM_STARS = 1500
 CENTER = vec2(WIDTH // 2, HEIGHT // 2)
 COLORS = 'red green blue orange purple cyan'.split()
@@ -118,6 +119,10 @@ class GameCube3D:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self.running = False
+                elif event.type == pg.KEYDOWN:
+                    if event.key == pg.K_p:
+                        self.running = False
+                        return_to_menu(self.screen, os.path.dirname(os.path.abspath(__file__)))
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glLoadIdentity()
@@ -134,3 +139,8 @@ class GameCube3D:
             self.clock.tick(60)
 
         pg.quit()
+
+if __name__ == "__main__":
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    game = GameCube3D(root_dir)
+    game.run()

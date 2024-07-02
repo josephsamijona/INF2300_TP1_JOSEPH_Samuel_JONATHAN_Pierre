@@ -34,11 +34,28 @@ class Button:
     def check_hover(self, mouse_pos):
         self.hovered = self.rect.collidepoint(mouse_pos)
 
-def show_animation_modes(screen, root_dir, cap, click_sound, hover_sound):
+def show_animation_modes(screen, root_dir):
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(current_dir)  # Aller au niveau supérieur pour accéder à assets
+    video_path = os.path.join(project_root, "game","assets", "video", "3_background.mp4")
+    click_sound_path = os.path.join(project_root,"game",  "assets", "sfx", "click.wav")
+    hover_sound_path = os.path.join(project_root, "game", "assets", "sfx", "hover.wav")
+
+    cap = cv2.VideoCapture(video_path)
+
+    sound_path = os.path.join(project_root, "game", "assets", "music", "LEMMiNO - Cipher (BGM).mp3")
+    pygame.mixer.init()
+    if not pygame.mixer.music.get_busy():
+        pygame.mixer.music.load(sound_path)
+        pygame.mixer.music.play(-1)
+
+    click_sound = pygame.mixer.Sound(click_sound_path)
+    hover_sound = pygame.mixer.Sound(hover_sound_path)
+
     animation_mode_items = ["Life", "Pendule", "Cube 3D", "Retour"]
     selected_item = 0
 
-    font_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../game/assets/fonts/Seagram tfb.ttf")
+    font_path = os.path.join(project_root, "game", "assets", "fonts", "Seagram tfb.ttf")
     font = pygame.font.Font(font_path, 50)
     title_font = pygame.font.Font(font_path, 80)
 
@@ -124,25 +141,27 @@ def show_animation_modes(screen, root_dir, cap, click_sound, hover_sound):
 
 def show_game_modes(screen, root_dir):
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    video_path = os.path.join(current_dir, "../game/assets/video/3_background.mp4")
-    click_sound_path = os.path.join(current_dir, "../game/assets/sfx/click.wav")
-    hover_sound_path = os.path.join(current_dir, "../game/assets/sfx/hover.wav")
+    project_root = os.path.dirname(current_dir)  # Aller au niveau supérieur pour accéder à assets
+    video_path = os.path.join(project_root, "game","assets", "video", "3_background.mp4")
 
     cap = cv2.VideoCapture(video_path)
-
-    sound_path = os.path.join(current_dir, "../game/assets/music/LEMMiNO - Cipher (BGM).mp3")
+    
+    click_sound_path = os.path.join(project_root,"game", "assets", "sfx", "click.wav")
+    hover_sound_path = os.path.join(project_root, "game","assets", "sfx", "hover.wav")
+    
+    click_sound = pygame.mixer.Sound(click_sound_path)
+    hover_sound = pygame.mixer.Sound(hover_sound_path)
+    
+    sound_path = os.path.join(project_root, "game", "assets", "music", "LEMMiNO - Cipher (BGM).mp3")
     pygame.mixer.init()
     if not pygame.mixer.music.get_busy():
         pygame.mixer.music.load(sound_path)
         pygame.mixer.music.play(-1)
 
-    click_sound = pygame.mixer.Sound(click_sound_path)
-    hover_sound = pygame.mixer.Sound(hover_sound_path)
-
     game_mode_items = ["1 vs Computer", "1 vs 2", "AI vs AI", "3D Adventure", "Animation Mode", "Retour"]
     selected_item = 0
 
-    font_path = os.path.join(current_dir, "../game/assets/fonts/Seagram tfb.ttf")
+    font_path = os.path.join(project_root, "game", "assets", "fonts", "Seagram tfb.ttf")
     font = pygame.font.Font(font_path, 50)
     title_font = pygame.font.Font(font_path, 80)
 
@@ -177,7 +196,7 @@ def show_game_modes(screen, root_dir):
                         game.run()
                     elif selected_item == 4:
                         print("Animation Mode sélectionné")
-                        show_animation_modes(screen, root_dir, cap, click_sound, hover_sound)
+                        show_animation_modes(screen, root_dir)
                     elif selected_item == 5:
                         return
             elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -203,7 +222,7 @@ def show_game_modes(screen, root_dir):
                             game.run()
                         elif i == 4:
                             print("Animation Mode sélectionné")
-                            show_animation_modes(screen, root_dir, cap, click_sound, hover_sound)
+                            show_animation_modes(screen, root_dir)
                         elif i == 5:
                             return
 
@@ -248,7 +267,7 @@ def show_game_modes(screen, root_dir):
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((1200, 800), pygame.RESIZABLE)
-    sound_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../game/assets/music/LEMMiNO - Cipher (BGM).mp3")
+    sound_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "game","assets", "music", "LEMMiNO - Cipher (BGM).mp3")
     pygame.mixer.init()
     pygame.mixer.music.load(sound_path)
     pygame.mixer.music.play(-1)

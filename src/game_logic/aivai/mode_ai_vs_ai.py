@@ -3,6 +3,7 @@ from pygame import mixer
 import os
 from src.game_logic.aivai.logicaivai import Fighter
 from src.game_logic.aivai.paru import Parallax
+from src.navigation import return_to_menu  # Assurez-vous d'importer la fonction
 
 # Ce code met en œuvre un mode de jeu où deux combattants contrôlés par l'IA s'affrontent.
 # Les concepts de programmation graphique et de gestion des animations sont appliqués pour créer un jeu dynamique et interactif.
@@ -14,8 +15,8 @@ class Gameaivai:
         pygame.init()
 
         # Créer la fenêtre du jeu
-        self.SCREEN_WIDTH = 1000
-        self.SCREEN_HEIGHT = 600
+        self.SCREEN_WIDTH = 1200
+        self.SCREEN_HEIGHT = 800
         self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         pygame.display.set_caption("Blades of Honor: Clash of Cultures")
 
@@ -157,6 +158,10 @@ class Gameaivai:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_p:
+                        run = False
+                        return_to_menu(self.screen, self.root_dir)
 
             # Mettre à jour l'affichage
             pygame.display.update()

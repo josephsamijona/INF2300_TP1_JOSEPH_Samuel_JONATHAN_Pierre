@@ -1,5 +1,6 @@
 import pygame
 import numpy as np
+from src.navigation import return_to_menu
 
 class GameLife:
     def __init__(self, root_dir):
@@ -13,14 +14,11 @@ class GameLife:
         new_grid = grid.copy()
         for x in range(cols):
             for y in range(rows):
-                # Compter les voisins vivants
                 neighbors = (
                     grid[(x-1) % cols, (y-1) % rows] + grid[(x) % cols, (y-1) % rows] + grid[(x+1) % cols, (y-1) % rows] +
                     grid[(x-1) % cols, (y) % rows] + grid[(x+1) % cols, (y) % rows] +
                     grid[(x-1) % cols, (y+1) % rows] + grid[(x) % cols, (y+1) % rows] + grid[(x+1) % cols, (y+1) % rows]
                 )
-
-                # Appliquer les règles du jeu de la vie
                 if grid[x, y] == 1:
                     if neighbors < 2 or neighbors > 3:
                         new_grid[x, y] = 0
@@ -31,7 +29,7 @@ class GameLife:
 
     def run(self):
         pygame.init()
-        width, height = 800, 600
+        width, height = 1200, 800
         cell_size = 10
         cols, rows = width // cell_size, height // cell_size
 
@@ -39,7 +37,6 @@ class GameLife:
         pygame.display.set_caption("Jeu de la Vie de Conway")
         clock = pygame.time.Clock()
 
-        # Initialisation de la grille
         grid = np.zeros((cols, rows), dtype=int)
         grid = self.random_grid(cols, rows)
 
@@ -47,6 +44,10 @@ class GameLife:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_p:  # Retour au menu principal avec la touche p
+                        return_to_menu(screen, self.root_dir)
+                        return
 
             screen.fill((0, 0, 0))
 

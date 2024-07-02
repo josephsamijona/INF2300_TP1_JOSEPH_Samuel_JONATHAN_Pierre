@@ -1,6 +1,7 @@
 import pygame
 import math
 import random
+from src.navigation import return_to_menu  # Assurez-vous d'importer la fonction
 
 class DoublePendulum:
     def __init__(self, L1, L2, M1, M2, G, theta1, theta2, omega1, omega2):
@@ -82,7 +83,7 @@ class GamePendulum:
 
     def run(self):
         pygame.init()
-        screen = pygame.display.set_mode((800, 600))
+        screen = pygame.display.set_mode((1200, 800))
         pygame.display.set_caption("Double Pendulum with Particles")
         clock = pygame.time.Clock()
 
@@ -98,6 +99,10 @@ class GamePendulum:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_p:
+                        self.running = False
+                        return_to_menu(screen, self.root_dir)
 
             screen.fill((255, 255, 255))
 

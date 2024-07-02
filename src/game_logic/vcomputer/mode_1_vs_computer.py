@@ -3,6 +3,7 @@ from pygame import mixer
 import os
 from src.game_logic.vcomputer.logic1vcom import Fighter
 from src.game_logic.vcomputer.paralaxus1 import Parallax
+from src.navigation import return_to_menu
 
 class Game1vsc:
     def __init__(self, root_dir):
@@ -11,8 +12,8 @@ class Game1vsc:
         pygame.init()
 
         # Créer la fenêtre du jeu
-        self.SCREEN_WIDTH = 1000
-        self.SCREEN_HEIGHT = 400
+        self.SCREEN_WIDTH = 1200
+        self.SCREEN_HEIGHT = 800
         self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         pygame.display.set_caption("Blades of Honor: Clash of Cultures")
 
@@ -55,7 +56,7 @@ class Game1vsc:
         self.magic_fx.set_volume(0.75)
 
         # Charger les images de fond pour le parallax
-        self.bg_images = [pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "backgrounds", f"plx-0.png")).convert_alpha() for i in range(1, 6)]
+        self.bg_images = [pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "backgrounds", f"jap.png")).convert_alpha() for i in range(1, 6)]
         self.ground_image = pygame.image.load(os.path.join(self.root_dir, "..", "game", "assets", "backgrounds", "ground.png")).convert_alpha()
 
         # Initialiser Parallax
@@ -132,22 +133,18 @@ class Game1vsc:
             self.fighter_2.draw(self.screen)
 
             # Vérifier la défaite des joueurs
-            if self.round_over == False:
-                if self.fighter_1.alive == False:
+            if not self.round_over:
+                if not self.fighter_1.alive:
                     self.score[1] += 1
                     self.round_over = True
                     self.round_over_time = pygame.time.get_ticks()
-                elif self.fighter_2.alive == False:
+                elif not self.fighter_2.alive:
                     self.score[0] += 1
                     self.round_over = True
                     self.round_over_time = pygame.time.get_ticks()
             else:
                 # Afficher l'image de victoire ou de défaite au centre de l'écran
-                if self.fighter_1.alive == False:
-                    img_to_display = self.victory_img
-                else:
-                    img_to_display = self.defeat_img
-
+                img_to_display = self.victory_img if not self.fighter_1.alive else self.defeat_img
                 victory_rect = img_to_display.get_rect(center=(self.SCREEN_WIDTH // 2, self.SCREEN_HEIGHT // 2))
                 self.screen.blit(img_to_display, victory_rect.topleft)
 
@@ -161,10 +158,13 @@ class Game1vsc:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_p:
+                        run = False
+                        return_to_menu(self.screen, self.root_dir)
 
             # Mettre à jour l'affichage
             pygame.display.update()
 
         # Quitter Pygame
         pygame.quit()
-

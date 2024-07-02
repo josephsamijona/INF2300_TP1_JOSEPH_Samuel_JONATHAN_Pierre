@@ -25,7 +25,7 @@ def main():
     # Bien que ce code ne montre pas directement l'utilisation d'OpenGL, pygame est souvent utilisé conjointement avec PyOpenGL pour les graphismes avancés.
     
     # Configuration de la fenêtre principale avec Pygame
-    screen = pygame.display.set_mode((1200, 600))
+    screen = pygame.display.set_mode((1200, 800))
     pygame.display.set_caption("Blades of Honor: Clash of Cultures")
     
     # Pipeline de transformation et pipeline graphique programmable, comme étapes pour l’animation :

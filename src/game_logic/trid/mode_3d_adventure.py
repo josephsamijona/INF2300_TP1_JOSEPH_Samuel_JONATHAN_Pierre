@@ -64,7 +64,7 @@ class Game:
         self.stepdelay = pg.time.get_ticks() / 200
         self.stepdelay2 = self.stepdelay
         
-        self.screen = pg.display.set_mode((800, 600))
+        self.screen = pg.display.set_mode((1200, 800))
         self.running = True
         self.clock = pg.time.Clock()
         pg.mouse.set_visible(False)
