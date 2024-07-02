@@ -12,14 +12,15 @@ class Parallax:
         self.ground_height = ground_image.get_height()
         self.bg_width = bg_images[0].get_width()
 
-        # Define game variables
+        # Définir les variables du jeu
         self.scroll = 0
-        self.scroll_direction = 1  # 1 for right, -1 for left
-        self.scroll_speed = 2  # Speed of the automatic scrolling
-        self.change_direction_time = 5  # Time in seconds to change direction
-        self.last_direction_change = time.time()  # Time of the last direction change
+        self.scroll_direction = 1  # 1 pour droite, -1 pour gauche
+        self.scroll_speed = 2  # Vitesse du défilement automatique
+        self.change_direction_time = 5  # Temps en secondes pour changer de direction
+        self.last_direction_change = time.time()  # Temps du dernier changement de direction
 
     def draw_bg(self):
+        # Dessiner l'arrière-plan
         for x in range(5):
             speed = 1
             for i in self.bg_images:
@@ -27,19 +28,21 @@ class Parallax:
                 speed += 0.2
 
     def draw_ground(self):
+        # Dessiner le sol
         for x in range(15):
             self.screen.blit(self.ground_image, ((x * self.ground_width) - self.scroll * 2.5, self.SCREEN_HEIGHT - self.ground_height))
 
     def update_scroll(self):
-        # Update scroll position
+        # Mettre à jour la position du défilement
         self.scroll += self.scroll_direction * self.scroll_speed
 
-        # Change direction based on the timer
+        # Changer de direction en fonction du timer
         if time.time() - self.last_direction_change > self.change_direction_time:
             self.scroll_direction *= -1
             self.last_direction_change = time.time()
 
     def draw(self):
+        # Dessiner l'arrière-plan et le sol, puis mettre à jour le défilement
         self.draw_bg()
         self.draw_ground()
         self.update_scroll()
